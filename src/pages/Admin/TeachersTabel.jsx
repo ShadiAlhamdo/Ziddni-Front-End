@@ -55,7 +55,7 @@ const TeachersTabel = () => {
                                 <td>{item}</td>
                                 <td>
                                     <div className="tabel-image">
-                                        <img src="./Images/teacher.jpg" alt="" className="tabel-user-image" />
+                                        <img src="/Images/teacher.jpg" alt="" className="tabel-user-image" />
                                         <span className="tabel-username">Shadi Alhamdo</span>
                                     </div>
                                    

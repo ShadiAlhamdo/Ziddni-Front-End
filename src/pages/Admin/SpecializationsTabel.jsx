@@ -74,7 +74,7 @@ const SpecializationsTabel = () => {
                                 <td>{index + 1}</td>
                                 <td>
                                     <div className="tabel-image">
-                                        <img src="./Images/specializations.jpg"  className="tabel-specializations-image" alt="" />
+                                        <img src="/Images/specializations.jpg"  className="tabel-specializations-image" alt="" />
                                     </div>
                                    
                                 </td>
