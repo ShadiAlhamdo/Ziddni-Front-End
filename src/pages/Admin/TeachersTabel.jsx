@@ -3,7 +3,7 @@ import AdminSideBar from "./AdminSideBar";
 import Swal from "sweetalert2";
 import swalWithBootstrapButtons from "sweetalert2";
 
-const StudentsTabel = () => {
+const TeachersTabel = () => {
 
     // Delete User Handler
     const deleteUserHandler=()=>{
@@ -39,12 +39,12 @@ const StudentsTabel = () => {
         <section className="tabel-container">
             <AdminSideBar/>
             <div className="tabel-wrapper">
-                <h1 className="tabel-title">Students</h1>
+                <h1 className="tabel-title">Teachers</h1>
                 <table className="tabel">
                     <thead>
                         <tr>
                             <th>Count</th>
-                            <th>Student</th>
+                            <th>Teacher</th>
                             <th>Email</th>
                             <th>Action</th>
                         </tr>
@@ -55,7 +55,7 @@ const StudentsTabel = () => {
                                 <td>{item}</td>
                                 <td>
                                     <div className="tabel-image">
-                                        <img src="/Images/teacher.jpg" alt="" className="tabel-user-image" />
+                                        <img src="./Images/teacher.jpg" alt="" className="tabel-user-image" />
                                         <span className="tabel-username">Shadi Alhamdo</span>
                                     </div>
                                    
@@ -82,4 +82,4 @@ const StudentsTabel = () => {
      );
 }
  
-export default StudentsTabel;
+export default TeachersTabel;
