@@ -134,10 +134,11 @@ const StudentProfile = () => {
                         <button type="submit" className="upload-profile-photo-btn">Upload</button>
                     </form>
                 </div>
+                <div className="profile-user-info">
                 <h1 className="profile-username">
                     {userStudent.username}
                 </h1>
-                    <p className="profile-bio"> Bio :{userStudent.bio}</p>
+                <p className="profile-bio"> Bio :{userStudent.bio}</p>
 
                 <div className="user-date-joined">
                     <strong>
@@ -151,6 +152,7 @@ const StudentProfile = () => {
                 <img src="/icons/update.png" className="icon-update" alt="" />
                     Update Profile
                 </button>
+                </div>
             </div>
            <div className="profile-courses-list pobular-course">
                 <h2 className="profile-course-list-title">

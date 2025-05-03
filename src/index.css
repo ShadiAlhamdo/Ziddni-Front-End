@@ -83,6 +83,9 @@ html::-webkit-scrollbar-thumb {
 section{
   padding: 20px;
 }
+section.Toastify{
+  padding: 0;
+}
 /*  Header Left */
 .header-left{
   display: flex;
@@ -206,7 +209,7 @@ section{
       display: flex;
   }
   .header-menu img{
-      animation: plus 1.5s infinite;
+    margin-right: 10px;
   }
   .navbar{
       position: absolute;
@@ -234,19 +237,6 @@ section{
       background-color: var(--main-color);
       color: var(--blue-color);
   }
-}
-
-@keyframes plus {
-  0%{
-      transform: scale(1);
-  }
-  50%{
-      transform: scale(1.1);
-  }
-  100%{
-      transform: scale(1);
-  }
-
 }
 /*Footer*/
 /* Footer */
@@ -417,6 +407,8 @@ footer .links a img:hover{
 }
 .scroll-to-top {
   position: fixed;
+  width: 40px;
+  height: 40px;
   bottom: 30px;
   right: 30px;
   background-color: var(--white-blue-color);
@@ -539,7 +531,8 @@ footer .links a img:hover{
 @media (max-width:540px) {
   .home-hero-header {
       background-size: contain;
-      height: 500px;
+      height: 350px;
+      top: -20px;
   }
   .home .swiper-horizontal{
     height: 400px;
@@ -547,12 +540,11 @@ footer .links a img:hover{
   .home-hero-header-layout{
       height: 50%;
   }
-  
   .swiper-pagination-fraction, .swiper-pagination-custom, .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal {
-  bottom: 50px;
-  top: var(--swiper-pagination-top, auto);
-  left: 0;
-  width: 100%;
+  bottom: 50px !important;
+  top: var(--swiper-pagination-top, auto) !important;
+  left: 0 !important;
+  width: 100% !important;
   }
   .home-title{
       font-size: 20px;
@@ -561,6 +553,7 @@ footer .links a img:hover{
       margin-left: 5px;
       font-size: 16px;
   }
+  
 }
 /*Services Section*/
 .services-container{
@@ -626,6 +619,16 @@ footer .links a img:hover{
   font-size: 16px;
   color: var(--gray-color);
 }
+@media (max-width:540px) {
+  .services .heading{
+    font-size: 21px;
+  }
+  .services-container .box .box-image{
+    height: 75px;
+    width: 75px;
+  }
+  
+}
 /*  Most Publare Specializations Section*/
 .specializations{
   background-color: var(--white-color);
@@ -675,6 +678,12 @@ footer .links a img:hover{
 }
 .specializations .container .box-overlay:hover{
   opacity: 0;
+}
+@media (max-width:540px) {
+ .specializations .heading{
+  font-size: 21px;
+ }
+  
 }
 /* Most Publare Courses Section*/
 .pobular-course{
@@ -777,14 +786,14 @@ footer .links a img:hover{
 }
 .buttons .register-course{
   display: block;
-  padding: 10px 0;
+  padding: 5px 0;
   text-align: center;
   flex: 2;
   background-color: var(--white-color);
   color: var(--blue-color);
   border: 1px solid var(--blue-color);
   border-radius: 10px;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
   transition: 0.2s;
 }
@@ -798,7 +807,7 @@ footer .links a img:hover{
   color: var(--red-color);
   border: 1px solid var(--red-color);
   border-radius: 10px;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
   transition: 0.2s;
 }
@@ -836,6 +845,12 @@ footer .links a img:hover{
   cursor: pointer;
   width: 40px;
 }
+@media (max-width:540px) {
+  .pobular-course .heading{
+   font-size: 21px;
+  }
+   
+ }
 /* Most Publare Teachers Section*/
 .teachers{
   margin: 20px 0;
@@ -845,6 +860,7 @@ footer .links a img:hover{
   margin: 30px 0;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 30px;
   flex-wrap: wrap;
 }
@@ -939,12 +955,23 @@ transform: rotate(-45deg) translateY(100%);
 @media (max-width:810px)
 {
 .teachers .container{
-  justify-content: stretch;
+  justify-content: center;
 }
 .teachers .container .box{
   max-width: 100%;
 }
 }
+@media (max-width:540px) {
+  .teachers .heading{
+   font-size: 21px;
+  }
+  .teachers .container .box {
+    width: 275px;
+  }
+  .teachers .box .title-date h4, .teachers .box .title-date span , .teachers .box .specialization{
+    font-size: 14px;
+  }
+ }
 /* Most Publare Students Section*/
 .students .container{
   padding: 30px 0;
@@ -1010,6 +1037,11 @@ transform: rotate(-45deg) translateY(100%);
   text-wrap: wrap;
 }
 }
+@media (max-width:540px) {
+  .students .heading{
+    font-size: 21px;
+  }
+ }
 /*----- Courses Page -----*/
 
 .courses-page .image-title{
@@ -1241,6 +1273,11 @@ transform: rotate(-45deg) translateY(100%);
   font-size: 18px;
   background-color: var(--main-color);
 }
+@media (max-width:520px){
+  .community-page .box .box-content{
+    font-size: 16px;
+  }
+} 
 /*--------- Answers Page ---------*/
 .answer-page .home-hero-header-layout{
   flex-direction: column;
@@ -1832,20 +1869,21 @@ cursor: auto;
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  justify-content: space-around;
   background-color: var(--gray-color);
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
 }
 .profile-image-wrapper{
-  width: 225px;
-  height: 225px;
+  width: 300px;
+  height: 300px;
   position: relative;
   text-align: center;
 }
 .profile-image{
   width: 100%;
   height: 100%;
-  border-radius: 10px;
+  border-radius: 50%;
   object-fit: cover;
   border:2px solid var(--blue-color);
 }
@@ -1953,6 +1991,18 @@ cursor: auto;
 .profile-delete-btn:hover{
   background-color: var(--red-color);
   color: var(--white-color);
+}
+@media (max-width:520px) {
+  .profile-image-wrapper{
+    width: 200px;
+    height: 200px;
+  }
+  .profile-course-list-title {
+    font-size: 21px;
+  }
+  .profile .box .student-info .student-name{
+    font-weight: 500;
+  }
 }
 /*------- Admin Dashboard --------*/
 

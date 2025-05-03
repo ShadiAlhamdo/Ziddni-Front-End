@@ -92,7 +92,7 @@ const Sidebar = () => {
             {/* زر السهم للأعلى */}
             {showScrollToTop && (
                 <button className="scroll-to-top" onClick={scrollToTop}>
-                   🔼
+                   ⭡
                 </button>
             )}
         </>
