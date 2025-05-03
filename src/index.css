@@ -160,6 +160,43 @@ section{
 .header-right-link a:hover{
   color: var(--blue-color);
 }
+.header-right-user-info{
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.header-rigth-username{
+  font-size: 21px;
+  font-weight: 500;
+  color: var(--blue-color);
+  margin-right: 10px;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+.header-right-user-photo{
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.header-right-dropdown{
+  position: absolute;
+  right: 50%;
+  top: 100%;
+  background-color: var(--gray-color);
+  border: 1px solid var(--blue-color);
+  border-radius: 5px;
+  padding: 5px;
+  width: 150px;
+  text-align: left;
+}
+.header-dropdown-item{
+  color: var(--dark-color);
+  font-weight: 500;
+  font-size: 21px;
+  margin-top: 15px;
+  cursor: pointer;
+}
 /*  Media Queries */
 @media (max-width:1380px){
   .header-left{

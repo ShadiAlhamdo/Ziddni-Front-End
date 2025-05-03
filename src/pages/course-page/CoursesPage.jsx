@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import Pagination from "../../components/pagination/Pagination";
 import CourseBox from "./CourseBox";
 

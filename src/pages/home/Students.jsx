@@ -1,5 +1,5 @@
 import Heading from "./Heading";
-import React, { useRef, useState } from 'react';
+import React from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -34,7 +34,7 @@ const Students = () => {
         className="mySwiper"
       >
         <SwiperSlide>
-          <img src="/Images/student.jpg" />
+          <img src="/Images/student.jpg" alt="" />
           <div className="info">
             <p className="name">
               Student: <span>Student-Name</span>
@@ -48,7 +48,7 @@ const Students = () => {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <img src="/Images/student.jpg" />
+          <img src="/Images/student.jpg" alt=""/>
           <div className="info">
             <p className="name">
               Student: <span>Student-Name</span>
@@ -60,7 +60,7 @@ const Students = () => {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <img src="/Images/student.jpg" />
+          <img src="/Images/student.jpg" alt=""/>
           <div className="info">
             <p className="name">
               Student: <span>Student-Name</span>
@@ -72,7 +72,7 @@ const Students = () => {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <img src="/Images/student.jpg" />
+          <img src="/Images/student.jpg" alt="" />
           <div className="info">
             <p className="name">
               Student: <span>Student-Name</span>

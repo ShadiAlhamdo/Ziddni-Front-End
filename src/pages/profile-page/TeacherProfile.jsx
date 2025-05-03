@@ -3,6 +3,8 @@ import DateChange from "../../components/Date/DateChange";
 import { useState } from "react";
 import UpdateTeacherProfileModal from "./UpdateTeacherProfileModal";
 import { ToastContainer } from "react-toastify";
+import Swal from "sweetalert2";
+import swalWithBootstrapButtons from "sweetalert2";
 
 const TeacherProfile = () => {
   
@@ -50,7 +52,38 @@ const TeacherProfile = () => {
         id: "6807d3ed21d8f38d6b405f57"
     }
     const [updateProfile,setUpdateProfile]=useState(false);
-    console.log(updateProfile)
+    console.log(updateProfile);
+
+     // Delete Account Handler
+     const deleteAccountHandler=()=>{
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#040734",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your Account has been deleted.",
+                icon: "success",
+                confirmButtonColor: "#040734",
+              });
+            }else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+                ) {
+                swalWithBootstrapButtons.fire({
+                    title: "Cancelled",
+                    text: "Something Wrong :)",
+                    icon: "error"
+                });
+                }
+          });
+    }
     return ( 
         <section className="profile">
         <ToastContainer position="top-center" theme="colored"/>
@@ -143,7 +176,7 @@ const TeacherProfile = () => {
  
                 </div>
             </div>
-            <button className="profile-delete-btn">
+            <button onClick={deleteAccountHandler} className="profile-delete-btn">
                 <img src="/icons/delete.png" className="icon-delete" alt="" />
                     Delete Your Account
                 </button>

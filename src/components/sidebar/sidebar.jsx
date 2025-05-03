@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Sidebar = () => {
+    const {user}=useSelector(state=>state.auth);
+
     const [isOpen, setIsOpen] = useState(false);
     const [theme, setTheme] = useState('dark'); 
     const [showScrollToTop, setShowScrollToTop] = useState(false); // حالة زر الرجوع للأعلى
@@ -60,9 +63,9 @@ const Sidebar = () => {
                     <div className="links">
                         <div className="link">
                             <div className="image">
-                                <img src="/Images/student.jpg" alt="Student" />
+                                <img src={user?.profilePhoto.url} alt="Student" />
                             </div>
-                            <Link onClick={toggleSidebar} to={"/profile/1"}>Profile</Link>
+                            <Link onClick={toggleSidebar} to={`/profile/${user?._id}`}>Profile</Link>
                         </div>
                         <div className="link">
                             

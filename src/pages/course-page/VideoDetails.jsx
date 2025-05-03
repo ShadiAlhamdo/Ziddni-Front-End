@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { toast ,ToastContainer} from "react-toastify";
 import VideoList from "../../components/VideoList/VideoList";
 import CommentList from "../../components/CommentList/CommentList";
-import UpdateCommentModal from "../../components/CommentList/UpdateCommentModal";
 
 const VideoDetails = () => {
     const course={

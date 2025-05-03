@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import DateAgo from "../../components/Date/DateAgo";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -58,7 +57,7 @@ const CommunityPage = () => {
                 </div>
                <div className="add-question-field">
                 <label htmlFor="text">Add Your Question</label>
-                <input type="text" name="text" id="text" placeholder="Type here please ...." value={content} />
+                <input type="text" name="text" id="text" onChange={(e)=>setContent(e.target.value)} placeholder="Type here please ...." value={content} />
                 <button type="submit" className="add-question-btn">Add</button>
                </div>
             </form>

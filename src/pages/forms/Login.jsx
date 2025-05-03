@@ -2,11 +2,14 @@ import { Link } from "react-router-dom";
 import "./form.css";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
-
+import {useDispatch} from "react-redux"
+import { loginUser } from "../../redux/apiCalls/authApiCall";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch();
+  // Form Submit Handler
   const formSubmitHandler = (e) => {
     e.preventDefault();
 
@@ -14,13 +17,11 @@ const Login = () => {
     if (password.trim() === "") return toast.error("Password is required");
 
     // يمكنك هنا إرسال البيانات للسيرفر أو التحقق منها
-    const loginData = {
-      email,
-      password,
-    };
-
-    console.log("Login Data:", loginData);
-    toast.success("Login submitted!");
+    
+    dispatch(loginUser({email,password}));
+    
+    setEmail("");
+    setPassword("");
   };
 
   return (

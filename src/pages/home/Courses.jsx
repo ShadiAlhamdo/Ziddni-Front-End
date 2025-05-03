@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import Heading from "./Heading";
 import CourseBox from "../course-page/CourseBox";
 
