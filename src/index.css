@@ -686,10 +686,6 @@ footer .links a img:hover{
   
 }
 /* Most Publare Courses Section*/
-.pobular-course{
-  margin: 20px 0;
- 
-}
 .pobular-course .container{
   margin: 20px 0;
   display: flex;
@@ -1109,11 +1105,10 @@ transform: rotate(-45deg) translateY(100%);
 .courses-page .pagination{
   background-color: var(--white-color);
 }
-
 @media (max-width:540px) {
   .courses-page .image-title {
       background-size: contain;
-      height: 400px;
+      height: 300px;
       width: 100%;
   }
  
