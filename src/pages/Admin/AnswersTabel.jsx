@@ -1,33 +1,20 @@
+import { useDispatch, useSelector } from "react-redux";
 import AdminSideBar from "./AdminSideBar";
 import Swal from "sweetalert2";
-import swalWithBootstrapButtons from "sweetalert2";
+import { deleteAnswer, getAllAnswers } from "../../redux/apiCalls/communityApiCall";
+import { useEffect } from "react";
 
 const AnswersTabel = () => {
-   const answers=  [
-    {
-        _id: "67c5058d448a20d67d9bc1a5",
-        content: "Answer From Fadi",
-        user: {
-            _id: "67c4fac7d1e843c2c6c7c5a4",
-            username: "Fadi Alhamdo",
-            profilePhoto: {
-                url: "https://res.cloudinary.com/djzntpxjj/image/upload/v1740962931/sfm7u94y5terc5z5g81d.jpg",
-                publicId: "sfm7u94y5terc5z5g81d"
-            },
-            id: "67c4fac7d1e843c2c6c7c5a4"
-        },
-        question: {
-            _id: "67c504e0448a20d67d9bc19d",
-            content: "Update New Question From fadi"
-        },
-        createdAt: "2025-03-03T01:27:41.629Z",
-        updatedAt: "2025-03-03T01:27:41.629Z",
-        "__v": 0
-    }
-]
+    const dispatch = useDispatch();
+    const {answers} = useSelector(state=>state.community.answersAll);
+    
+    useEffect(()=>{
+        dispatch(getAllAnswers());
+    },[]);
+   
     // Delete Answer Handler
-    const deleteAnswerHandler=()=>{
-        Swal.fire({
+    const deleteAnswerHandler=async(answer)=>{
+    const result=await    Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this Answer!",
             icon: "warning",
@@ -35,25 +22,12 @@ const AnswersTabel = () => {
             confirmButtonColor: "#d33",
             cancelButtonColor: "#040734",
             confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
-            if (result.isConfirmed) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Answer has been deleted.",
-                icon: "success",
-                confirmButtonColor: "#040734",
-              });
-            }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-                ) {
-                swalWithBootstrapButtons.fire({
-                    title: "Cancelled",
-                    text: "Something Wrong :)",
-                    icon: "error"
-                });
-                }
           });
+            if (result.isConfirmed) {
+            await dispatch(deleteAnswer(answer));
+            dispatch(getAllAnswers())
+            }
+         
     }
     return ( 
         <section className="tabel-container">
@@ -71,7 +45,7 @@ const AnswersTabel = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {answers.map((item,index)=>(
+                        {answers?.map((item,index)=>(
                             <tr key={item._id }>
                                 <td>{index + 1}</td>
                                 <td>
@@ -89,7 +63,7 @@ const AnswersTabel = () => {
                                 <td>
                                     <div className="tabel-butoon-group">
                                        
-                                        <button onClick={deleteAnswerHandler}>
+                                        <button onClick={()=>deleteAnswerHandler(item)}>
                                             Delete Answer
                                         </button>
                                     </div>

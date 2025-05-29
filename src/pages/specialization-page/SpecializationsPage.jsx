@@ -1,4 +1,15 @@
+import { Link } from "react-router-dom";
+import {useDispatch,useSelector} from "react-redux";
+import { useEffect } from "react";
+import { getSpecializations } from "../../redux/apiCalls/specializationApiCall";
 const SpecializationsPage = () => {
+    const dispatch=useDispatch();
+  const {specializations}=useSelector(state=>state?.specialization);
+  useEffect(()=>{
+    dispatch(getSpecializations())
+
+  },[])
+
     return (
       <div className="specializations-page courses-page">
       <div className="image-title">
@@ -10,32 +21,16 @@ const SpecializationsPage = () => {
       </div>
       <section className="specializations">
             <div className="container">
-                <div className="box">
+               {specializations.map((specialization)=>(
+                <div key={specialization?._id} className="box">
                     <div className="box-image">
-                        <img src="Images/specializations.jpg" alt="" />
+                        <img src={specialization?.specializationPhoto?.url} alt="" />
                     </div>
                     <div className="box-overlay"></div>
-                    <h4>Specializations Name</h4>
+                    <Link to={`/specializations/${specialization?.specializationName}`}>{specialization?.specializationName}</Link>
                 </div>
-                <div className="box">
-                    <div className="box-image">
-                        <img src="Images/specializations.jpg" alt="" />
-                    </div>
-                    <div className="box-overlay"></div>
-                    <h4>Specializations Name</h4>
-                </div><div className="box">
-                    <div className="box-image">
-                        <img src="Images/specializations.jpg" alt="" />
-                    </div>
-                    <div className="box-overlay"></div>
-                    <h4>Specializations Name</h4>
-                </div><div className="box">
-                    <div className="box-image">
-                        <img src="Images/specializations.jpg" alt="" />
-                    </div>
-                    <div className="box-overlay"></div>
-                    <h4>Specializations Name</h4>
-                </div>
+               ))},
+                  
             </div>
         </section>
       

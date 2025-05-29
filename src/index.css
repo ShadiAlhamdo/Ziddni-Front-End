@@ -295,11 +295,17 @@ footer .links a img:hover{
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
+.active{
+  background-color: var(--gray-color);
+}
+button:disabled{
+  cursor: not-allowed !important;
+}
 /*Sidebar*/
 .sidebar {
   position:fixed;
   width: 250px;
-  height: 350px;
+  height: 370px;
   background-color: var(--blue-color);
   z-index: 10;
   left: 0;
@@ -407,6 +413,9 @@ footer .links a img:hover{
 }
 .scroll-to-top {
   position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 40px;
   height: 40px;
   bottom: 30px;
@@ -421,7 +430,10 @@ footer .links a img:hover{
   z-index: 1000;
   transition: opacity 0.3s ease-in-out;
 }
-
+.scroll-to-top img {
+  width: 16px;
+  height: 16px;
+}
 .scroll-to-top:hover {
   background-color: #0fa6c5;
 }
@@ -643,16 +655,22 @@ footer .links a img:hover{
 .specializations .container .box{
   border-radius: 5px;
   padding: 10px ;
-  max-width: 450px ;
+  max-width: 350px ;
+  max-height: 250px;
   position: relative;
   transition: 0.3s;
+  overflow: hidden;
+  border: 1px var(--blue-color);
+  border-radius: 10px;
 }
 .specializations .container .box-image{
   width: 100%;
+  
 
 }
 .specializations .container .box img{
   width: 100%;
+  height: 100%;
 }
 .specializations .container .box-overlay{
   position: absolute;
@@ -666,7 +684,7 @@ footer .links a img:hover{
   border-radius: 5px;
   transition: 0.3s;
 }
-.specializations .container .box h4{
+.specializations .container .box a{
   position: absolute;
   color: var(--white-blue-color);
   background-color: var(--blue-color);
@@ -691,9 +709,12 @@ footer .links a img:hover{
   display: flex;
   flex-wrap: wrap;
   flex-direction: row-reverse;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 20px;
   
+}
+.jc-center{
+  justify-content: center !important;
 }
 .pobular-course .box{
   position: relative;
@@ -702,6 +723,7 @@ footer .links a img:hover{
   max-width: 300px ;
   border: 2px solid var(--blue-color);
   transition: 0.3s;
+  background-color: var(--white-color);
 }
 .pobular-course .box:hover {
   transform: scale(1.05);
@@ -726,6 +748,8 @@ footer .links a img:hover{
 .pobular-course .box .box-image{
   width: 80%;
   margin: auto;
+  max-height: 200px;
+  overflow: hidden;
 }
 .pobular-course .box .box-image img{
   width: 100%;
@@ -856,7 +880,7 @@ footer .links a img:hover{
   margin: 30px 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: normal;
   gap: 30px;
   flex-wrap: wrap;
 }
@@ -867,7 +891,9 @@ footer .links a img:hover{
   border-radius: 5px;
 }
 .teachers .container .box .box-image{
-  width: 100%;
+ max-width: 325px ;
+ max-height: 215px;
+ overflow: hidden;
 }
 .teachers .container .box .box-image img{
   width: 100%;
@@ -976,13 +1002,13 @@ transform: rotate(-45deg) translateY(100%);
   height: 600px;
 }
 .students .container .swiper{
-  height: 100%;
+  height: 80%;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
   border-radius: 10PX;
 }
 .students .container .swiper img{
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   display: block;
   margin: 15px auto;
@@ -1093,10 +1119,15 @@ transform: rotate(-45deg) translateY(100%);
   border: 0;
   outline: 1.5px solid var(--white-blue-color);
   font-size: 18px;
-  color: var(--white-blue-color);
+  color: var(--dark-color);
   font-weight: 500;
   padding: 10px;
   border-radius: 5px; 
+}
+.courses-page .section-course-list{
+  display: flex;
+  flex-direction: row-reverse;
+  background-color: var(--white-color);
 }
 .courses-page .container{
   background-color: var(--white-color);
@@ -1110,6 +1141,14 @@ transform: rotate(-45deg) translateY(100%);
       background-size: contain;
       height: 300px;
       width: 100%;
+  }
+  .courses-page .container{
+    justify-content: center;
+    align-items: center;
+  }
+  .courses-page .section-course-list{
+    flex-direction: column;
+    
   }
  
 }
@@ -1137,6 +1176,10 @@ transform: rotate(-45deg) translateY(100%);
 /* ------ Specializations page -------------*/
 .specializations-page .image-title{
   background-image: url("../public/Images/specialization-page.png");
+}
+.specializations-page .container{
+  justify-content: space-around;
+  align-items: center !important;
 }
 /* ----------- Communty Page ---------------*/
 .community-page .image-title{
@@ -1182,7 +1225,7 @@ transform: rotate(-45deg) translateY(100%);
   border: 0;
   outline: 1.5px solid var(--white-blue-color);
   font-size: 18px;
-  color: var(--white-blue-color);
+  color: var(--dark-color);
   font-weight: 500;
   padding: 15px 10px;
   padding-left: 50px;
@@ -1210,7 +1253,7 @@ transform: rotate(-45deg) translateY(100%);
   border: 0;
   outline: 1.5px solid var(--white-blue-color);
   font-size: 18px;
-  color: var(--white-blue-color);
+  color: var(--dark-color);
   font-weight: 500;
   padding-left: 50px;
   border-radius: 5px;
@@ -1235,6 +1278,7 @@ transform: rotate(-45deg) translateY(100%);
   align-items: center;
 }
 .community-page .box{
+  width: 100% !important;
   cursor: pointer;
   padding: 5px 7px;
   display: flex;
@@ -1255,6 +1299,10 @@ transform: rotate(-45deg) translateY(100%);
   height: 75px;
   border-radius: 50%;
   border: 1px solid var(--blue-color);
+}
+.community-page .box .box-info p{
+  color:  var(--dark-color);
+  font-weight: 500;
 }
 .community-page .box .box-info .student-name{
   font-size: 16px;
@@ -1287,6 +1335,7 @@ transform: rotate(-45deg) translateY(100%);
 }
 .answer-page .box{
 cursor: auto;
+width: 100%;
 }
 .question-box .box-info{
   display: flex;
@@ -1450,6 +1499,7 @@ cursor: auto;
   height: 70px;
   border-radius: 50%;
   object-fit: cover;
+  border: 1px solid var(--blue-color);
 }
 .course-details-user{
   display: flex;
@@ -1458,6 +1508,9 @@ cursor: auto;
 }
 .course-details-user strong{
   font-size: 21px;
+  color: var(--dark-color);
+}
+.course-details-user strong a{
   color: var(--dark-color);
 }
 .course-details-user span{
@@ -1469,6 +1522,9 @@ cursor: auto;
   font-size: 21px;
   line-height: 1.8;
   color: var(--primary-color);
+  padding: 5px;
+  background-color: white;
+  border-radius: 10px;
 }
 .course-details-icon-wrapper{
   margin: 15px 0;
@@ -1480,23 +1536,19 @@ cursor: auto;
   gap: 15px;
   transition: 0.3;
 }
+.course-details-icon-wrapper div:first-child{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .course-details-icon-wrapper img{
   width: 40px;
   cursor: pointer;
   margin-left: 15px;
 
 }
-.course-details-icon-wrapper .animation{
-  animation: myAnim 4s ease 0s infinite normal forwards;
-}
-.course-details-icon-wrapper .animation:hover{
-  transform: scale(1.1);
-  opacity: 0.7;
-}
-.course-details-icon-wrapper img.subscribers{
-  width: 25px;
-  cursor: auto;
-  animation:0;
+.course-details-icon-wrapper img.image-opacity{
+  opacity: 0.4;
 }
 .course-details-videos-wrapper{
   width:100%;
@@ -1557,33 +1609,11 @@ cursor: auto;
     width: 175px;
     height: 100px;
   }
+  .course-details-icon-wrapper div:first-child{
+  display: flex;
+  align-items: center;
+  gap:5px;
 }
-@keyframes myAnim {
-	0%,
-	100% {
-		transform: translateY(0);
-	}
-
-	10%,
-	30%,
-	50%,
-	70% {
-		transform: translateY(-8px);
-	}
-
-	20%,
-	40%,
-	60% {
-		transform: translateY(8px);
-	}
-
-	80% {
-		transform: translateY(6.4px);
-	}
-
-	90% {
-		transform: translateY(-6.4px);
-	}
 }
 /* ------- Video Details Page ------*/
 .video-details{
@@ -1602,6 +1632,14 @@ cursor: auto;
   object-fit: contain;
   border: 1px solid var(--blue-color);
   border-radius: 10px;
+}
+.video-details-video-loading{
+  width: 100%;
+  height: calc(100vh - 235px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 .update-video-label{
   font-size: 14px;
@@ -1718,6 +1756,11 @@ cursor: auto;
   height: 75px;
   border-radius: 50%;
 }
+.comment-imgae-name p{
+  font-weight: bold;
+  margin-left: 10px;
+  color: var(--dark-color);
+}
 .comment-content{
   margin-top: 10px;
   text-wrap: wrap;
@@ -1731,8 +1774,8 @@ cursor: auto;
 .video-list-container {
   display: inline-block;
   position: absolute;
-  top: 50px;
-  right: -200px;
+  top: 20px;
+  left: -100px;
 }
 
 .video-list-container .toggle-button {
@@ -1776,6 +1819,8 @@ cursor: auto;
   text-decoration: none;
   padding: 10px;
   display: block;
+  border-bottom: 1px solid var(--dark-color);
+  font-size: 12px;
 }
 
 .video-list-item a:hover {
@@ -1789,9 +1834,14 @@ cursor: auto;
     font-size: 16px;
   }
   .video-list-container {
-    top: 50px;
-    right: 20px;
+    top: 18px;
+    left: 20px;
 }
+}
+@media (max-width:520px) {
+  .video-details-title{
+    font-size: 24px;
+  }
 }
 
 /*----- Update Course Modal -----*/
@@ -2309,4 +2359,26 @@ tr:hover{
   th,td{
     padding: 2px;
   }
+}
+/* ------------------- */
+.require-login{
+  height: calc(100vh - 235px);
+}
+.display-none{
+  display: none;
+}
+.Not-Found-p{
+  font-weight: bold;
+  font-size: 21px;
+  text-align: center;
+  width: 100%;
+  color: var(--pumpkin-color);
+}
+.loading{
+  min-height: calc(100vh - 235px);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
 }

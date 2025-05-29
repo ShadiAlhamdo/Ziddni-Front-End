@@ -35,21 +35,21 @@ const HomePage = () => {
         <SwiperSlide>
             <div className="home-hero-header-layout">
                     <h1 className="home-title">
-                        Welcome To <span>Ziddni</span>
+                       Welcome to<span>Ziddni</span> – Learn, Grow, and Succeed! 
                     </h1>
                 </div>
         </SwiperSlide>
         <SwiperSlide>
             <div className="home-hero-header-layout">
                     <h1 className="home-title">
-                        Welcome To <span>Ziddni</span>
+                        <span>Ziddni</span> : Unlock Your Potential with Every Lesson
                     </h1>
                 </div>
         </SwiperSlide>
         <SwiperSlide>
             <div className="home-hero-header-layout">
                     <h1 className="home-title">
-                        Welcome To <span>Ziddni</span>
+                       Fuel Your Passion for Learning at <span>Ziddni</span>
                     </h1>
                 </div>
         </SwiperSlide>

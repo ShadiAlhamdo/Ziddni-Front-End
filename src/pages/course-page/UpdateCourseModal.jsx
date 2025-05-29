@@ -1,24 +1,26 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-
+import {useDispatch} from "react-redux"
+import { updateCourse } from "../../redux/apiCalls/courseApiCall";
 const UpdateCourseModal = ({setUPdateCourse,course}) => {
+    
+    const dispatch = useDispatch()
 
-    const [title,setTitle]=useState(course.title);
-    const [description,setDescription]=useState(course.description);
-    const [category,setCategory]=useState(course.category);
+    const [title,setTitle] = useState(course.title);
+    const [description,setDescription] = useState(course.description);
+    const [category,setCategory] = useState(course.category);
     // Form Submit Handler
     const formSubmitHandler=(e)=>{
         e.preventDefault();
          if(title.trim()===""){
                     return toast.error(" Course Title Is Required")
                 }
-                if(description.trim()===""){
-                    return toast.error(" Course Description Is Required")
-                }
+                
                 if(category.trim()===""){
                     return toast.error(" Course Category Is Required")
                 }
-        console.log({title,description,category})
+       dispatch(updateCourse(course?._id,{title,category,description}));
+       setUPdateCourse(false);
     }
     return ( 
         <div className="update-course">

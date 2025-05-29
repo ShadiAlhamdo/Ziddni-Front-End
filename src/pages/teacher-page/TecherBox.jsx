@@ -1,30 +1,26 @@
 import { Link } from "react-router-dom";
+import DateChange from "../../components/Date/DateChange";
 
-const TeacherBox = () => {
+const TeacherBox = ({username, bio ,id ,createdAt,profilePhoto,specialization}) => {
     return ( 
         <div className="box holographic-card">
                     <div className="box-image">
-                        <img src="/Images/teacher.jpg" alt="" />
+                        <img src={`${profilePhoto?.url}`} alt="" />
                     </div>
                     <div className="box-text">
                         <div className="title-date">
-                            <h4>Name:Teacher Name</h4>
-                            <span>Joined Date:2025/10/10</span>
+                            <h4>Name : {username}</h4>
+                            <span><DateChange date={createdAt}/> </span>
                         </div>
                         <div className="specialization">
-                            Specialization Name: <span>Name-Name</span>
+                            Specialization Name: <span>{specialization}</span>
                         </div> 
                     </div>
                         <p className="bio">
-                            Bio,text Bio
-                            Bio,Bio,Bio,
-                            Bio,Bio,Bio,
-                            Bio,Bio,Bio,
-                            Bio,Bio,Bio,
-                            Bio,Bio,Bio
+                            {bio}
                         </p>
                         <div className="buttons">
-                            <Link to={"/profile/1"} className="register-course">
+                            <Link to={`/profile/teacher/${id}`} className="register-course">
                             Go To Profile
                             </Link>
                             

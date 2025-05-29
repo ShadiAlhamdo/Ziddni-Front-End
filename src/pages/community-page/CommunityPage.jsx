@@ -1,39 +1,70 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
-
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import swalWithBootstrapButtons from "sweetalert2";
+import DateChange from "../../components/Date/DateChange";
+import UpdateQuestionModal from "./UpdateQuestionModal";
+import {useDispatch,useSelector} from "react-redux"
+import { addNewQuestion, deleteQuestion, getAllQuestion, searchQuestions } from "../../redux/apiCalls/communityApiCall";
+import DateAgo from "../../components/Date/DateAgo";
 const CommunityPage = () => {
+    const dispatch = useDispatch();
+    const {questions} = useSelector(state=>state.community);
+        const {user} = useSelector(state=>state.auth);
+
+    useEffect(()=>{
+        dispatch(getAllQuestion());
+    },[]);
     const [content,setContent]=useState("");
     const [search,setSearch]=useState("");
+   
+    const [updateQuestion,setUpdateQuestion]=useState(false);
+    const [question,setQuestion]=useState("");
+    // Form Submit Handler
     const formSubmitHandler = (e) => {
         e.preventDefault();
     
         if (content.trim() === "") {
-          return toast.error("The Answer Content Is Required");
+          return toast.error("The Qusetion Content Is Required");
         }
     
-        const formData = new FormData();
-        formData.append('content', content);
-        console.log("Content to add:", content);
-        // ترسل البيانات هنا لو تريد
+        dispatch(addNewQuestion(content));
+        setContent("");
       };
-    
-      const handleSearchChange = (e) => {
-        const value = e.target.value;
-        setSearch(value);
-    
-        // كل مرة المستخدم يكتب، تعمل بحث مباشرة
-        searchHandler(value);
-      };
-    
-      const searchHandler = (query) => {
-        console.log("Searching for:", query);
-        // هنا تضع كود البحث الخاص بك (مثلا تصفية قائمة أو طلب API)
-      };
+
+    const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+
+      // البحث أو إعادة تحميل جميع الأسئلة إذا كان الحقل فارغًا
+      if (value.trim() !== "") {
+        dispatch(searchQuestions(value));
+      } else {
+        dispatch(getAllQuestion());
+      }
+    };
+       
+      
+        // Delete Quetsion Handler
+   const deleteQuetsionHandler=(question)=>{
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#040734",
+        confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+        if (result.isConfirmed) {
+           dispatch(deleteQuestion(question?._id))
+        }
+        });
+}
     
     return ( 
         <div className="community-page courses-page">
-           <ToastContainer theme="colored" position="top-center"/>
         <div className="image-title">
            <div className="home-hero-header-layout">
               <h1 className="home-title">
@@ -62,25 +93,37 @@ const CommunityPage = () => {
                </div>
             </form>
        <div className="container">
-            <Link to={"/answers/1"} className="box">
-                <div className="box-info">
-                    <div className="student-info">
-                        <img src="/Images/student.jpg" alt="" />
-                        <p className="student-name">
-                        student name: shadi Alhamdo
-                        </p>
-                    </div>
-                    <span className="date">01-02-2025</span>
-                </div>
-                <div className="box-content">
-                    the new question For Test ......
-                    This is New Question For Testing ,This is New Question For Testing ,
-                    This is New Question For Testing ,This is New Question For Testing ,
-                </div>
-            </Link>
+            {questions?.map((q)=>(
+              <div className="box">
+              <div  className="box">
+              <div className="box-info">
+                  <Link to={`/profile/student/${q?.user?._id}`} className="student-info">
+                      <img src={q?.user?.profilePhoto?.url} alt="" />
+                      <p className="student-name">
+                      student name : {q.user.username}
+                      </p>
+                  </Link>
+                  <span className="date"><DateAgo date={q.createdAt}/></span>
+              </div>
+              <Link to={`/answers/${q?._id}`} className="box-content">
+                 {q.content}
+              </Link>
+          </div>
+          {user?._id === q?.user?._id && (
+            <div className="comment-icons">
+              <img src="/icons/update.png" onClick={()=>{
+                  setUpdateQuestion(true);
+                  setQuestion(q);
+              }} className="icon-update" alt="" />
+              <img src="/icons/delete.png" onClick={()=>deleteQuetsionHandler(q)} className="icon-delete" alt="" />
+              </div>
+          )}
+              </div>
+            ))}
             
        </div>
-        
+       {updateQuestion && <UpdateQuestionModal setUpdateQuestion={setUpdateQuestion} question={question}/>}
+
       </div>
      );
 }

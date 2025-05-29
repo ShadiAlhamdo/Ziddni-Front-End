@@ -1,22 +1,59 @@
-import { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { useEffect, useState, } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import {  addNewAnswer, deleteAnswer, getAllAnswersForSpecificQuestion, getAllQuestion } from "../../redux/apiCalls/communityApiCall";
+import DateChange from "../../components/Date/DateChange";
+import UpdateAnswerModal from "./UpdateAnswerModal";
+import DateAgo from "../../components/Date/DateAgo";
 
 const Answers = () => {
+    const dispatch=useDispatch();
+    const {answers}=useSelector(state=>state.community.answersQes);
+    const {id:questionId}=useParams();
+    const {questions}=useSelector(state=>state.community);
+    const {user} = useSelector(state=>state.auth);
+    const question = questions?.find(q => q._id === questionId);
+    const [content,setContent]=useState("");
+    const [updateAnswer,setUpdateAnswer]=useState(false);
+    const [answer,setAnswer]=useState("");
+
+
+
     useEffect(() => {
+        dispatch(getAllQuestion());
+        dispatch(getAllAnswersForSpecificQuestion(questionId));
         window.scrollTo(0, 0);
-      }, []); // [] معناها تعمل مرة واحدة عند التحميل
+      }, [questionId]); 
       
- const [content,setContent]=useState("");
-    const formSubmitHandler=(e)=>{
+      // Form Submit Handler
+    const formAddAnswerHandler=async(e)=>{
         e.preventDefault();
 
         if(content.trim()==="") return toast.error("The Answe Content Is Required");
 
-        console.log(content)
+        await dispatch(addNewAnswer(content,question?._id));
+        setContent("");
+      
     }
-    
+        // Delete Answer Handler
+   const deleteAnswerHandler=(answer)=>{
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#040734",
+        confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+        if (result.isConfirmed) {
+           dispatch(deleteAnswer(answer));
+        } 
+        });
+}
     return ( <div className="community-page answer-page courses-page">
-        <ToastContainer theme="colored" position="top-center"/>
         <div className="image-title">
            <div className="home-hero-header-layout">
               <h1 className="home-title">
@@ -28,81 +65,58 @@ const Answers = () => {
                         The Question
                     </h2>
                     <div className="student-info">
-                        <img src="/Images/student.jpg" alt="" />
+                        <img src={question?.user?.profilePhoto?.url} alt="" />
                         <p className="student-name">
-                        student name: shadi Alhamdo
+                        student name : {question?.user?.username} 
                         </p>
                     </div>
-                    <span className="date">01-02-2025</span>
+                    <span className="date"> <DateChange date={question?.createdAt}/> </span>
                 </div>
                 <div className="box-content">
-                    the new question For Test ......
-                    This is New Question For Testing ,This is New Question For Testing ,
-                    This is New Question For Testing ,This is New Question For Testing ,
+                    {question?.content}
                 </div>
             </div>
           </div>
         </div>
-        <form onSubmit={formSubmitHandler} className="community-form">
+        <form onSubmit={formAddAnswerHandler} className="community-form">
         <label className="paragraph" >You can add Your Answer Here ...</label>
                <div className="input-field">
-                    <input type="text"  onChange={(e)=>setContent(e.target.value)}  placeholder="Type Here ..." />
+                    <input type="text " value={content} onChange={(e)=>setContent(e.target.value)}  placeholder="Type Here ..." />
                     <button type="submit">Add</button>
                </div>
             </form>
        <div className="container">
        <span className="course-details-videoList">Answer List</span>
-            <div className="box">
+            {answers?.map((a)=>(
+                <div key={a._id} className="box">
                 <div className="box-info">
-                    <div className="student-info">
-                        <img src="/Images/student.jpg" alt="" />
+                    <Link  to={`/profile/student/${a?.user?._id}`} className="student-info">
+                        <img src={a?.user?.profilePhoto?.url} alt="" />
                         <p className="student-name">
-                        student name: shadi Alhamdo
+                        student name : {a?.user?.username}
                         </p>
-                    </div>
-                    <span className="date">01-02-2025</span>
+                    </Link>
+                    <span className="date"><DateAgo date={a?.createdAt}/></span>
                 </div>
                 <div className="box-content">
-                    the new question For Test ......
-                    This is New Question For Testing ,This is New Question For Testing ,
-                    This is New Question For Testing ,This is New Question For Testing ,
+                    {a?.content}
                 </div>
+                {user?._id === a?.user?._id &&(
+                    <div className="comment-icons">
+              <img src="/icons/update.png" onClick={()=>{
+                  setUpdateAnswer(true);
+                  setAnswer(a);
+              }} className="icon-update" alt="" />
+              <img src="/icons/delete.png" onClick={()=>deleteAnswerHandler(a)} className="icon-delete" alt="" />
+              </div>
+                )}
             </div>
-            <div className="box">
-                <div className="box-info">
-                    <div className="student-info">
-                        <img src="/Images/student.jpg" alt="" />
-                        <p className="student-name">
-                        student name: shadi Alhamdo
-                        </p>
-                    </div>
-                    <span className="date">01-02-2025</span>
-                </div>
-                <div className="box-content">
-                    the new question For Test ......
-                    This is New Question For Testing ,This is New Question For Testing ,
-                    This is New Question For Testing ,This is New Question For Testing ,
-                </div>
-            </div>
-            <div className="box">
-                <div className="box-info">
-                    <div className="student-info">
-                        <img src="/Images/student.jpg" alt="" />
-                        <p className="student-name">
-                        student name: shadi Alhamdo
-                        </p>
-                    </div>
-                    <span className="date">01-02-2025</span>
-                </div>
-                <div className="box-content">
-                    the new question For Test ......
-                    This is New Question For Testing ,This is New Question For Testing ,
-                    This is New Question For Testing ,This is New Question For Testing ,
-                </div>
-            </div>
+            ))}
+          
        </div>
-        
-      </div> );
+         {updateAnswer && <UpdateAnswerModal setUpdateAnswer={setUpdateAnswer} answer={answer}/>}
+      </div> 
+      );
 }
  
 export default Answers;

@@ -1,45 +1,19 @@
 import AdminSideBar from "./AdminSideBar";
 import Swal from "sweetalert2";
-import swalWithBootstrapButtons from "sweetalert2";
+import { deleteQuestion, getAllQuestion } from "../../redux/apiCalls/communityApiCall";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const QuestionsTabel = () => {
-   const questions= [
-    {
-        _id: "67c504e0448a20d67d9bc19d",
-        content: "Update New Question From fadi",
-        user: {
-            _id: "67c4fac7d1e843c2c6c7c5a4",
-            username: "Fadi Alhamdo",
-            profilePhoto: {
-                url: "https://res.cloudinary.com/djzntpxjj/image/upload/v1740962931/sfm7u94y5terc5z5g81d.jpg",
-                publicId: "sfm7u94y5terc5z5g81d"
-            },
-            id: "67c4fac7d1e843c2c6c7c5a4"
-        },
-        createdAt: "2025-03-03T01:24:48.490Z",
-        updatedAt: "2025-03-03T01:26:03.791Z",
-        "__v": 0
-    },
-    {
-        _id: "67c504e0448a20d67d9bc19d",
-        content: " Question From shadi",
-        user: {
-            _id: "67c4fac7d1e843c2c6c7c5a4",
-            username: "shadi Alhamdo",
-            profilePhoto: {
-                url: "https://res.cloudinary.com/djzntpxjj/image/upload/v1740962931/sfm7u94y5terc5z5g81d.jpg",
-                publicId: "sfm7u94y5terc5z5g81d"
-            },
-            id: "67c4fac7d1e843c2c6c7c5a4"
-        },
-        createdAt: "2025-03-03T01:24:48.490Z",
-        updatedAt: "2025-03-03T01:26:03.791Z",
-        "__v": 0
-    }
-]
+    const dispatch = useDispatch();
+    const {questions} = useSelector(state=>state.community);
+    
+    useEffect(()=>{
+        dispatch(getAllQuestion());
+    },[]);
     // Delete Question Handler
-    const deleteQuestionHandler=()=>{
-        Swal.fire({
+    const deleteQuestionHandler=async (id)=>{
+      const result =await  Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this Question!",
             icon: "warning",
@@ -47,25 +21,12 @@ const QuestionsTabel = () => {
             confirmButtonColor: "#d33",
             cancelButtonColor: "#040734",
             confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
-            if (result.isConfirmed) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Question has been deleted.",
-                icon: "success",
-                confirmButtonColor: "#040734",
-              });
-            }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-                ) {
-                swalWithBootstrapButtons.fire({
-                    title: "Cancelled",
-                    text: "Something Wrong :)",
-                    icon: "error"
-                });
-                }
           });
+            if (result.isConfirmed) {
+              await dispatch(deleteQuestion(id));
+              dispatch(getAllQuestion());
+            }
+          
     }
     return ( 
         <section className="tabel-container">
@@ -82,7 +43,7 @@ const QuestionsTabel = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {questions.map((item,index)=>(
+                        {questions?.map((item,index)=>(
                             <tr key={item._id }>
                                 <td>{index + 1}</td>
                                 <td>
@@ -97,7 +58,7 @@ const QuestionsTabel = () => {
                                 <td>
                                     <div className="tabel-butoon-group">
                                        
-                                        <button onClick={deleteQuestionHandler}>
+                                        <button onClick={()=>deleteQuestionHandler(item?._id)}>
                                             Delete Question
                                         </button>
                                     </div>

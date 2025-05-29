@@ -1,40 +1,33 @@
 import { Link } from "react-router-dom";
 import AdminSideBar from "./AdminSideBar";
 import Swal from "sweetalert2";
-import swalWithBootstrapButtons from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteProfile, getAllTeachersProfiles } from "../../redux/apiCalls/profileApiCall";
+import { useEffect } from "react";
 
 const TeachersTabel = () => {
+    const dispatch = useDispatch();
+    const {teachersProfiles} = useSelector(state=>state.profile); 
+    useEffect(()=>{
+        dispatch(getAllTeachersProfiles());
+    },[])
+    // delete User Handler 
+    const deleteUserHandler = async (id) => {
+    const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this User!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#040734",
+        confirmButtonText: "Yes, delete it!"
+    });
 
-    // Delete User Handler
-    const deleteUserHandler=()=>{
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this User!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#040734",
-            confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
-            if (result.isConfirmed) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "User has been deleted.",
-                icon: "success",
-                confirmButtonColor: "#040734",
-              });
-            }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-                ) {
-                swalWithBootstrapButtons.fire({
-                    title: "Cancelled",
-                    text: "Something Wrong :)",
-                    icon: "error"
-                });
-                }
-          });
+    if (result.isConfirmed) {
+        await dispatch(deleteProfile(id));
+        dispatch(getAllTeachersProfiles());
     }
+};
     return ( 
         <section className="tabel-container">
             <AdminSideBar/>
@@ -50,25 +43,25 @@ const TeachersTabel = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {[1,2,3,4,5,6,7,8,9,10].map((item)=>(
-                            <tr key={item}>
-                                <td>{item}</td>
+                        {teachersProfiles?.map((item,ind)=>(
+                            <tr key={item?._id}>
+                                <td>{ind + 1}</td>
                                 <td>
                                     <div className="tabel-image">
-                                        <img src="/Images/teacher.jpg" alt="" className="tabel-user-image" />
-                                        <span className="tabel-username">Shadi Alhamdo</span>
+                                        <img src={item?.profilePhoto?.url} alt="" className="tabel-user-image" />
+                                        <span className="tabel-username">{item?.username}</span>
                                     </div>
                                    
                                 </td>
                                 <td>
-                                    shadi@email.com
+                                   {item?.email}
                                 </td>
                                 <td>
                                     <div className="tabel-butoon-group">
                                         <button>
-                                            <Link to={"/profile/1"}>view Profile</Link>
+                                            <Link to={`/profile/teacher/${item?._id}`}>view Profile</Link>
                                         </button>
-                                        <button onClick={deleteUserHandler}>
+                                        <button onClick={()=>deleteUserHandler(item?._id)}>
                                             Delete User
                                         </button>
                                     </div>

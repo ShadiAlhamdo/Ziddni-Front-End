@@ -1,15 +1,20 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+import {useDispatch} from "react-redux"
+import { UpdateComment } from "../../redux/apiCalls/commentApiCall";
 
 const UpdateCommentModal = ({setUpdateComment,comment}) => {
-    const [content,setContent]=useState(comment.content);
+    const disptach = useDispatch();
 
+    const [content,setContent]=useState(comment.content);
+    // Form Submit Handler
     const formSubmitHandler = (e) => {
         e.preventDefault();
       
         if(content.trim()==="") return toast.error("Please Write Something")
             
-        console.log(content)
+        disptach(UpdateComment(content,comment?._id,comment?.video));
+        setUpdateComment(false)
     }
     return ( 
         <div className="update-course">
@@ -24,7 +29,7 @@ const UpdateCommentModal = ({setUpdateComment,comment}) => {
                  onChange={(e)=>setContent(e.target.value)}
                  />
                 
-                 <button type="submit" className="update-course-btn">Update Course</button>
+                 <button type="submit" className="update-course-btn">Update</button>
             </form>
         </div>
      );

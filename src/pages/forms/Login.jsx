@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import "./form.css";
 import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import {useDispatch} from "react-redux"
 import { loginUser } from "../../redux/apiCalls/authApiCall";
 const Login = () => {
@@ -26,7 +26,6 @@ const Login = () => {
 
   return (
     <section className="form-container login-container ">
-       <ToastContainer theme="colored" position="top-center"/>
       <h1 className="form-title">Login In Your Account</h1>
       <form onSubmit={formSubmitHandler} className="form">
         <div className="form-group">

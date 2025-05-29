@@ -1,5 +1,9 @@
 import {Link} from "react-router-dom";
+import { useSelector } from "react-redux";
+
 const Navbar = ({toggel,setToggel}) => {
+    const {user}=useSelector(state=>state.auth);
+
     return ( 
         <nav style={{clipPath:toggel&&"polygon(0 0, 100% 0, 100% 100%, 0 100%)"}} className="navbar">
                 <ul className="nav-links">
@@ -18,9 +22,9 @@ const Navbar = ({toggel,setToggel}) => {
                     <Link onClick={()=>setToggel(prev=> !prev)} to="/specializations" className="nav-link">
                     <img src="/icons/category.ico" alt="" />Specializations
                     </Link>
-                    <Link onClick={()=>setToggel(prev=> !prev)}  to="/admin-dashboard" className="nav-link">
+                    {user?.isAdmin &&<Link onClick={()=>setToggel(prev=> !prev)}  to="/admin-dashboard" className="nav-link">
                     <img src="/icons/newspaper.ico" alt="" />Admin Dashboard
-                    </Link>
+                    </Link>}
                 </ul>
             </nav>
      );

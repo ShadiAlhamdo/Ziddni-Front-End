@@ -1,82 +1,28 @@
-import { useState } from "react";
-import {Link, useParams} from "react-router-dom";
-import { toast ,ToastContainer} from "react-toastify";
+import { useEffect, useState } from "react";
+import {Link, useParams , useNavigate} from "react-router-dom";
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import swalWithBootstrapButtons from "sweetalert2";
 import UpdateCourseModal from "./UpdateCourseModal";
 import UpdateVideoInfoModal from "./UpdateVideoInfoModal";
 import DateChange from "../../components/Date/DateChange";
+import {useSelector,useDispatch} from "react-redux";
+import { deleteCourse, fetchSingelCourse, ToggelFavoriteSingelCourse, ToggelLikeCourse, ToggelSubscribeSingelCourse, updateCourseImage } from "../../redux/apiCalls/courseApiCall";
+import { deleteVideo } from "../../redux/apiCalls/videoApiCall";
 const CourseDetails = () => {
-    const courses=[
-        {
-            id:1,
-            title:"New Course",
-            description:"Number Test DescriptionFor Test Description,For Test Description,For Test Description ",
-            user:{
-                username:"Shadi Alhamdo",
-                image:"/Images/Teacher.jpg"
-            },
-            category:"design",
-            image:{
-                url:"/Images/specializations.jpg",
-            },
-            likes: [],
-            videos: [
-                {
-                    id:1,
-                    title:"vido_1",
-                    video:"/Vidos/vido_1.mp4",
-                    image:"/Images/ziddny5.webp"
-                },
-                {
-                    id:2,
-                    title:"vido_2",
-                    video:"/Vidos/vido_1.mp4",
-                    image:"/Images/ziddny5.webp"
-                },
-                {
-                    id:3,
-                    title:"vido_3",
-                    video:"/Vidos/vido_1.mp4",
-                    image:"/Images/ziddny5.webp"
-                }
-            ],
-            favoriteBy: [],
-            subscribers: [],
-            createdAt: "2025-04-22T16:09:09.000Z",
-        },
-        {
-            id:2,
-            title:"New Course",
-            description:"For Test DescriptionFor Test Description,For Test Description,For Test Description ",
-            user:{
-                username:"Shadi Alhamdo",
-                image:"/Images/Teacher.jpg"
-            },
-            category:"math",
-            image:"/Images/specializations.jpg",
-            likes: [],
-            videos: [],
-            subscribers: [],
-            createdAt: "2025-04-22T16:09:09.000Z",
-        },
-        {
-            id:3,
-            title:"New Course",
-            description:"For Test DescriptionFor Test Description,For Test Description,For Test Description ",
-            user:{
-                username:"Shadi Alhamdo",
-                image:"/Images/Teacher.jpg"
-            },
-            category:"math",
-            image:"/Images/specializations.jpg",
-            likes: [],
-            videos: [],
-            subscribers: [],
-            createdAt: "2025-04-22T16:09:09.000Z",
-        }];// this List Most We GEt From Backend
+    const dispatch = useDispatch();
+    const {course} = useSelector(state=>state.course);
+    const {user} = useSelector(state=>state.auth);
     const {id}=useParams();
-    const course=courses.find(c=> c.id===parseInt(id));
+    useEffect(()=>{
+        window.scrollTo(0,0);
+        dispatch(fetchSingelCourse(id));
+
+    },[id]);
+
+    
+
+    
+  
     const [file,setFile]=useState(null);
     const [updateCourse,setUPdateCourse]=useState(false);
     const [updateVideo,setUPdateVideo]=useState(false);
@@ -86,13 +32,17 @@ const CourseDetails = () => {
     const updateCourseImageSubmit=(e)=>{
         e.preventDefault();
         if(!file) return toast.error("Image File Is Required");
-        console.log(file)
+        const formData=new FormData();
+        formData.append("image",file);
+        dispatch(updateCourseImage(course?._id,formData));
+              
     }
+    const navigate = useNavigate();
     // Delete Course Handler
     const deleteCourseHandler=()=>{
         Swal.fire({
             title: "Are you sure?",
-            text: "You won't be able to revert this!",
+            text: "You won't be able to revert this Course!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d33",
@@ -100,29 +50,17 @@ const CourseDetails = () => {
             confirmButtonText: "Yes, delete it!"
           }).then((result) => {
             if (result.isConfirmed) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Course has been deleted.",
-                icon: "success",
-                confirmButtonColor: "#040734",
-              });
-            }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-                ) {
-                swalWithBootstrapButtons.fire({
-                    title: "Cancelled",
-                    text: "Something Wrong :)",
-                    icon: "error"
-                });
-                }
+                dispatch(deleteCourse(course?._id));
+                navigate(`/profile/teacher/${user._id}`)
+
+            }
           });
     }
     // Delete Video Handler
-    const deleteVideoHandler=()=>{
+    const deleteVideoHandler=(video)=>{
         Swal.fire({
             title: "Are you sure?",
-            text: "You won't be able to revert this!",
+            text: "You won't be able to revert this Video!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#d33",
@@ -130,31 +68,19 @@ const CourseDetails = () => {
             confirmButtonText: "Yes, delete it!"
           }).then((result) => {
             if (result.isConfirmed) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Video has been deleted.",
-                icon: "success",
-                confirmButtonColor: "#040734",
-              });
-            }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-                ) {
-                swalWithBootstrapButtons.fire({
-                    title: "Cancelled",
-                    text: "Something Wrong :)",
-                    icon: "error"
-                });
-                }
+                console.log(video?._id)
+              dispatch(deleteVideo(video?._id))
+              window.location.reload();
+            }
           });
     }
 
     return ( 
         <section className="course-details">
-            <ToastContainer theme="colored" position="top-center"/>
            <div className="course-details-image-wrapper">
                 <img src={course?.image?.url} alt="" className="course-details-image" />
-                <form onSubmit={updateCourseImageSubmit} className="update-course-image-form">
+                {user?._id === course?.user?._id && (
+                    <form onSubmit={updateCourseImageSubmit} className="update-course-image-form">
                     <label htmlFor="file" className="update-course-label">
                         <img src="/icons/ios-photos.png" alt="" />
                         select new Image
@@ -162,55 +88,68 @@ const CourseDetails = () => {
                     <input style={{display:"none"}} type="file" name="file" id="file" onChange={(e)=>setFile(e.target.files[0])} />
                     <button type="submit">upload</button>
                 </form>
+                )}
            </div>
            <h1 className="course-details-title">
                 {course?.title}
            </h1>
            <div className="course-details-user-info">
-                <img src={course?.user?.image} alt="" className="course-details-user-imgae" />
+                <img src={course?.user?.profilePhoto?.url} alt="" className="course-details-user-imgae" />
                 <div className="course-details-user">
                     <strong>
-                        Teacher Name: <Link to="/profile/1">{course?.user?.username}</Link>
+                        Teacher Name: <Link to={`/profile/teacher/${course?.user?._id}`}>{course?.user?.username}</Link>
                     </strong>
                     <span><DateChange date={course?.createdAt}/></span>
                 </div>
            </div>
            <p className="course-details-description">
                 {course?.description}
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia harum provident pariatur
-                 debitis commodi fuga odio,
-                 autem impedit delectus nemo culpa officia sed natus aliquid cumque maxime nostrum,
-                 cupiditate optio.
+                
            </p>
            <div className="course-details-icon-wrapper">
-                <div>
-                    <img src="/icons/favorite.png" alt="favoriteBy"  className="animation"/>
-                        <small>{course?.favoriteBy?.length} Favorite</small>
-                    <img src="/icons/like.png" alt="likes"className="animation" />
+                {user && (
+                    <div>
+                    <img onClick={()=>dispatch(ToggelFavoriteSingelCourse(course?._id))}   src="/icons/favorite.png" alt="favoriteBy" 
+                    className={course?.favorites?.includes(user?._id)
+                        ? "image-opacity":""
+                    }/>
+                        <small>{course?.favorites?.length} Favorite</small>
+                    <img onClick={()=>dispatch(ToggelLikeCourse(course?._id))} src="/icons/like.png" alt="likes"
+                     className={course?.likes?.includes(user?._id)
+                        ? "image-opacity":""
+                    } />
                         <small>{course?.likes?.length} Like</small>
-                    <img src="/icons/community.ico" alt="subscribers" className="subscribers" />
+                    <img onClick={()=>dispatch(ToggelSubscribeSingelCourse(course?._id))} src="/icons/community.ico" alt="subscribers"
+                    className={course?.subscribers?.includes(user?._id)
+                        ? "image-opacity":""
+                    } />
                         <small>{course?.subscribers?.length} subscribers </small>
                 </div>
-                <div>
+                )}
+                {user?._id === course?.user?._id&&(
+                    <div>
                     <img src="/icons/update.png" onClick={()=>setUPdateCourse(true)} className="icon-update" alt="" />
                     <img src="/icons/delete.png" onClick={deleteCourseHandler} className="icon-delete" alt="" />
-                </div>
+                    </div>
+                )}
            </div>
            <div className="course-details-videos-wrapper">
                     <span className="course-details-videoList">Video List</span>
-                {course?.videos?.map((v) => (
+                {course?.videos?.length===0?<p className="Not-Found-p">No Videos Yet</p>:
+                course?.videos?.map((v) => (
                             <>
-                            <Link to="/videos/details/1"  className="course-detailse-video" key={v.id}>
-                                <img src={v.image} className="course-detailse-video-image" alt="" />
-                                <p className="course-detailse-video-name">{v.title}</p>
+                            <Link  to={`/videos/details/${v._id}?courseId=${id}`} // هنا نمرر كامل الفيديو
+                                          className="course-detailse-video" key={v?._id}>
+                                <img src={v?.image?.url} className="course-detailse-video-image" alt="" />
+                                <p className="course-detailse-video-name">{v?.title}</p>
                             </Link>
-                            <div className="course-details-video-buttons">
+                            {user?._id === course?.user?._id&&(<div className="course-details-video-buttons">
                             <img src="/icons/update.png" onClick={() => {
                                         setUPdateVideo(true);
                                         setVideo(v);
                                     }} className="icon-update" alt="" />
-                            <img src="/icons/delete.png" onClick={deleteVideoHandler} className="icon-delete" alt="" />
-                            </div>
+                            <img src="/icons/delete.png" onClick={()=>deleteVideoHandler(v)} className="icon-delete" alt="" />
+                            </div>)}
                             </>
                             ))}
                    

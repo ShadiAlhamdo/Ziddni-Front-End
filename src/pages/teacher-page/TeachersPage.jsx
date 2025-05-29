@@ -1,6 +1,16 @@
+import { useEffect } from "react";
 import TeacherBox from "./TecherBox";
+import {useDispatch,useSelector} from "react-redux"
+import { fetchAllTeachers } from "../../redux/apiCalls/teacherApiCall";
 
 const TeahersPage = () => {
+    const dispatch = useDispatch();
+    const {teachers} = useSelector(state=>state.teacher);
+
+    useEffect(()=>{
+        dispatch(fetchAllTeachers());
+    },[]);
+
     return ( 
         <div className="teachers-page courses-page ">
         <div className="image-title">
@@ -11,20 +21,15 @@ const TeahersPage = () => {
           </div>
         </div>
         <section className="teachers">
-        <form className="teachers-form courses-form">
-                        <div className="input-field">
-                            <label for="cars">Choose a Specializations:</label>
-                            <select name="cars" id="cars">
-                                <option disabled defaultChecked value="volvo">All</option>
-                                <option value="saab">Saab</option>
-                                <option value="mercedes">Mercedes</option>
-                                <option value="audi">Audi</option>
-                            </select>
-                        </div>
-        </form>
         <div className="container">
-           {[1,2,3,4,5,6,7,8].map((e)=>(
-            <TeacherBox/>
+           {teachers?.map((t)=>(
+            <TeacherBox key={t?._id} 
+                                    username={t?.username}
+                                    bio={t?.bio}
+                                    id={t?._id}
+                                    createdAt={t?.createdAt}
+                                    profilePhoto={t?.profilePhoto}
+                                    specialization={t?.specialization?.specializationName}/>
            ))}
         </div>
           

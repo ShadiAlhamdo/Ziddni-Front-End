@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
-
+import {useDispatch} from "react-redux"
+import { createSpecialization } from "../../redux/apiCalls/specializationApiCall";
 const AddSpecializationForm = () => {
-     const [specialization,setSpecialization]=useState("");
+    const dispatch = useDispatch()
+     const [specializationName,setSpecializationName]=useState("");
         const formSubmitHandeler=(e)=>{
             e.preventDefault();
     
-            if(specialization.trim()==="") return toast.error("Specialization is required");
+            if(specializationName.trim()==="") return toast.error("Specialization is required");
     
-            console.log(specialization)
+           dispatch(createSpecialization({specializationName}))
+           setSpecializationName("");
         }
     return ( 
         <div className="add-category">
@@ -16,7 +19,7 @@ const AddSpecializationForm = () => {
             <form onSubmit={formSubmitHandeler} >
                 <div className="add-category-form-group">
                     <label htmlFor="title">Specialization title</label>
-                    <input type="text" id="title" onChange={(e)=>setSpecialization(e.target.value)} placeholder="Enter Specialization Title" />
+                    <input type="text" id="title" value={specializationName} onChange={(e)=>setSpecializationName(e.target.value)} placeholder="Enter Specialization Title" />
                 </div>
                 <button type="submit" className="add-category-btn">
                     Add

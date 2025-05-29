@@ -2,58 +2,19 @@ import { Link } from "react-router-dom";
 import AdminSideBar from "./AdminSideBar";
 import Swal from "sweetalert2";
 import swalWithBootstrapButtons from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { deleteVideo, fetchAllVideo } from "../../redux/apiCalls/videoApiCall";
 
 const VideosTabel = () => {
-    const Videos=[
-        {
-            _id: "6807d43721d8f38d6b405f60",
-            title: "Video 1 New Test",
-            url: "https://res.cloudinary.com/djzntpxjj/video/upload/v1745691202/a3t3kfbghu96xhzwpabz.mp4",
-            publicId: "a3t3kfbghu96xhzwpabz",
-            image: {
-                url: "https://res.cloudinary.com/djzntpxjj/image/upload/v1745691056/srrfnmmjf25wcsnlhpsb.webp",
-                publicId: "srrfnmmjf25wcsnlhpsb"
-            },
-            course: {
-            _id: "6807d40c21d8f38d6b405f5b",
-            title: "Web Course"
-        },
-            createdAt: "2025-04-22T17:39:03.946Z"
-        },
-        {
-            _id: "6807d43721d8f38d6b405f61",
-            title: "Video 2 New Test",
-            url: "https://res.cloudinary.com/djzntpxjj/video/upload/v1745691202/a3t3kfbghu96xhzwpabz.mp4",
-            publicId: "a3t3kfbghu96xhzwpabz",
-            image: {
-                url: "https://res.cloudinary.com/djzntpxjj/image/upload/v1745691056/srrfnmmjf25wcsnlhpsb.webp",
-                publicId: "srrfnmmjf25wcsnlhpsb"
-            },
-            course: {
-            _id: "6807d40c21d8f38d6b405f5b",
-            title: "Web Course"
-        },
-            createdAt: "2025-04-22T17:39:03.946Z"
-        },
-        {
-            _id: "6807d43721d8f38d6b405f62",
-            title: "Video 1 New Test",
-            url: "https://res.cloudinary.com/djzntpxjj/video/upload/v1745691202/a3t3kfbghu96xhzwpabz.mp4",
-            publicId: "a3t3kfbghu96xhzwpabz",
-            image: {
-                url: "https://res.cloudinary.com/djzntpxjj/image/upload/v1745691056/srrfnmmjf25wcsnlhpsb.webp",
-                publicId: "srrfnmmjf25wcsnlhpsb"
-            },
-            course: {
-            _id: "6807d40c21d8f38d6b405f5b",
-            title: "PhotoShop Course"
-        },
-            createdAt: "2025-04-22T17:39:03.946Z"
-        }
-    ]
+    const dispatch = useDispatch();
+    const {videosAll:Videos} = useSelector(state=>state.video);
+    useEffect(()=>{
+        dispatch(fetchAllVideo());
+    },[])
     // Delete Video Handler
-    const deleteVideoHandler=()=>{
-        Swal.fire({
+    const deleteVideoHandler=async (id)=>{
+      const result=await  Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this Video!",
             icon: "warning",
@@ -61,25 +22,12 @@ const VideosTabel = () => {
             confirmButtonColor: "#d33",
             cancelButtonColor: "#040734",
             confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
+          }); 
             if (result.isConfirmed) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Video has been deleted.",
-                icon: "success",
-                confirmButtonColor: "#040734",
-              });
-            }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-                ) {
-                swalWithBootstrapButtons.fire({
-                    title: "Cancelled",
-                    text: "Something Wrong :)",
-                    icon: "error"
-                });
-                }
-          });
+             await dispatch(deleteVideo(id));
+             dispatch(fetchAllVideo());
+            }
+          
     }
     return ( 
         <section className="tabel-container">
@@ -111,9 +59,9 @@ const VideosTabel = () => {
                                 <td>
                                     <div className="tabel-butoon-group">
                                         <button>
-                                            <Link to={"/videos/details/1"}>View Video</Link>
+                                            <Link to={`/videos/details/${item?._id}?courseId=${item?.course?._id}`}>View Video</Link>
                                         </button>
-                                        <button onClick={deleteVideoHandler}>
+                                        <button onClick={()=>deleteVideoHandler(item?._id)}>
                                             Delete Video
                                         </button>
                                     </div>

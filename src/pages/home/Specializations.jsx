@@ -1,36 +1,29 @@
+import { useEffect } from "react";
 import Heading from "./Heading";
-
+import {useDispatch,useSelector} from "react-redux"
+import { getPobularSpecializations } from "../../redux/apiCalls/specializationApiCall";
+import { Link } from "react-router-dom";
 const Specializations = () => {
+    const dispatch = useDispatch();
+    const {pobularSpecializations} = useSelector(state=>state.specialization);
+
+    useEffect(()=>{
+        dispatch(getPobularSpecializations());
+    },[])
     return ( 
         <section className="specializations">
             <Heading title={"The most popular specialties"}/>
             <div className="container">
-                <div className="box">
+                {pobularSpecializations?.map((s)=>(
+                    <div className="box">
                     <div className="box-image">
-                        <img src="Images/specializations.jpg" alt="" />
+                        <img src={s?.specializationPhoto?.url} alt="" />
                     </div>
                     <div className="box-overlay"></div>
-                    <h4>Specializations Name</h4>
+                    <Link to={`/specializations/${s?.specializationName}`}>{s?.specializationName}</Link>
                 </div>
-                <div className="box">
-                    <div className="box-image">
-                        <img src="Images/specializations.jpg" alt="" />
-                    </div>
-                    <div className="box-overlay"></div>
-                    <h4>Specializations Name</h4>
-                </div><div className="box">
-                    <div className="box-image">
-                        <img src="Images/specializations.jpg" alt="" />
-                    </div>
-                    <div className="box-overlay"></div>
-                    <h4>Specializations Name</h4>
-                </div><div className="box">
-                    <div className="box-image">
-                        <img src="Images/specializations.jpg" alt="" />
-                    </div>
-                    <div className="box-overlay"></div>
-                    <h4>Specializations Name</h4>
-                </div>
+                ))}
+                
             </div>
         </section>
      );

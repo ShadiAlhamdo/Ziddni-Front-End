@@ -1,11 +1,17 @@
 import AdminSideBar from "./AdminSideBar";
 import Swal from "sweetalert2";
-import swalWithBootstrapButtons from "sweetalert2";
-
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCtegory, fetchAllCtegories } from "../../redux/apiCalls/categoryApiCall";
+import { useEffect } from "react";
 const CategoriesTabel= () => {
-    
+    const dispatch = useDispatch();
+    const {categories} = useSelector(state=>state.category);
+
+    useEffect(()=>{
+        dispatch(fetchAllCtegories());
+    },[])
     // Delete Category Handler
-    const deleteCategoryHandler=()=>{
+    const deleteCategoryHandler=(c)=>{
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this Category!",
@@ -16,22 +22,8 @@ const CategoriesTabel= () => {
             confirmButtonText: "Yes, delete it!"
           }).then((result) => {
             if (result.isConfirmed) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Category has been deleted.",
-                icon: "success",
-                confirmButtonColor: "#040734",
-              });
-            }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-                ) {
-                swalWithBootstrapButtons.fire({
-                    title: "Cancelled",
-                    text: "Something Wrong :)",
-                    icon: "error"
-                });
-                }
+             dispatch(deleteCtegory(c?._id));
+            }
           });
     }
     return ( 
@@ -48,16 +40,16 @@ const CategoriesTabel= () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {[1,2,3].map((item)=>(
-                            <tr key={item }>
-                                <td>{item}</td>
+                        {categories?.map((c,ind)=>(
+                            <tr key={c?._id }>
+                                <td>{ind + 1}</td>
                                 <td>
-                                   <b>Design</b>
+                                   <b>{c?.title}</b>
                                 </td>
                                 <td>
                                 
                                     <div className="tabel-butoon-group">
-                                        <button onClick={deleteCategoryHandler}>
+                                        <button onClick={()=>deleteCategoryHandler(c)}>
                                             Delete Category
                                         </button>
                                        

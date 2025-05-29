@@ -1,9 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import "./form.css";
-import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import {useDispatch,useSelector} from "react-redux"
+import { registerUser } from "../../redux/apiCalls/authApiCall";
+import swal from "sweetalert";
 
 const Register = () => {
+
+  const dispatch=useDispatch();
+  const {registerMessage}=useSelector(state=> state.auth)
+
   const [role, setRole] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
@@ -11,7 +18,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [whatsappLink, setWhatsappLink] = useState("");
-
+  const [specialization,setSpecialization] = useState("");
   const formSubmitHandler = (e) => {
     e.preventDefault(); // تم إصلاح الخطأ هنا
 
@@ -21,23 +28,32 @@ const Register = () => {
     if (role.trim() === "") return toast.error("You must select a role");
 
     // هنا يمكنك إرسال البيانات للخادم أو التعامل معها محليًا
-    const userData = {
-      username,
-      bio,
-      email,
-      password,
-      role,
-      phoneNumber: role === "teacher" ? phoneNumber : "",
-      whatsappLink: role === "teacher" ? whatsappLink : "",
-    };
 
-    console.log("User Data:", userData);
-    toast.success("Form submitted successfully!");
+
+    dispatch(registerUser({username
+                          ,email,role,password,bio,
+                          phoneNumber,whatsappLink,
+                          specialization}));
+   
   };
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (registerMessage) {
+      swal({
+        title: registerMessage,
+        icon: "success",
+      }).then((isOk) => {
+        if (isOk) {
+          navigate("/login");
+          window.location.reload(); // للتأكد من إغلاق SweetAlert نهائياً بعد الانتقال
+        }
+      });
+    }
+  }, [registerMessage, navigate]);
   return (
     <section className="form-container">
-        <ToastContainer theme="colored" position="top-center"/>
       <h1 className="form-title">Create New Account</h1>
       <form onSubmit={formSubmitHandler} className="form">
         <div className="form-group">
@@ -143,6 +159,23 @@ const Register = () => {
                 onChange={(e) => setWhatsappLink(e.target.value)}
               />
             </div>
+            <div className="form-group">
+          <label htmlFor="specialization" className="form-label">
+            Select your specialization 
+          </label>
+          <select
+            id="specialization"
+            className="form-input"
+            value={specialization}
+            onChange={(e) => setSpecialization(e.target.value)}
+          >
+            <option disabled value="">
+              -- Select specialization --
+            </option>
+            <option value="67ba0f06cf1c261aaa81a3a1">Web Developer New</option>
+            <option value="67ba17976464f481c175cd61">Design</option>
+          </select>
+        </div>
           </>
         )}
 

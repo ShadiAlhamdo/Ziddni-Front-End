@@ -1,59 +1,54 @@
-import { Link } from "react-router-dom";
+import { Link, useParams , useNavigate} from "react-router-dom";
 import DateChange from "../../components/Date/DateChange";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UpdateTeacherProfileModal from "./UpdateTeacherProfileModal";
-import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import swalWithBootstrapButtons from "sweetalert2";
-
+import { useDispatch, useSelector } from "react-redux";
+import { deleteProfile, getUserProfile, uploadProfilePhoto } from "../../redux/apiCalls/profileApiCall";
+import {Oval} from "react-loader-spinner"
+import { logoutUser } from "../../redux/apiCalls/authApiCall";
 const TeacherProfile = () => {
-  
-    const userTeacher={
-        _id: "6807d3ed21d8f38d6b405f57",
-        username: "alaa",
-        email: "alaa@email.com",
-        profilePhoto: {
-            url: "https://media.istockphoto.com/id/1389898082/de/foto/s%C3%BC%C3%9Fer-junge-ikonischer-charakter-mit-brille-3d-rendering.jpg?s=2048x2048&w=is&k=20&c=cOl9XSWvShItbtNwlZabaVpW2TQ7Yljx0t-LSaRm4x4=",
-            publicId: null
-        },
-        role: "teacher",
-        isAdmin: false,
-        isAccountVerified: false,
-        phoneNumber: "+963933519382",
-        whatsappLink: "link",
-        specialization: "67ba0df7b4f995b3d95bd651",
-        createdAt: "2025-04-22T17:37:49.656Z",
-        updatedAt: "2025-04-22T17:37:49.656Z",
-        __v: 0,
-        courses: [
-            {
-                _id: "6807d40c21d8f38d6b405f5b",
-                title: "Web Course",
-                description: "Design Course For Biggner",
-                user: "6807d3ed21d8f38d6b405f57",
-                category: "Design",
-                image: {
-                    url: "https://res.cloudinary.com/djzntpxjj/image/upload/v1745343499/hi1ld0ggd05s2nkdnxcf.jpg",
-                    publicId: "hi1ld0ggd05s2nkdnxcf"
-                },
-                likes: [],
-                videos: [
-                    "6807d43721d8f38d6b405f60"
-                ],
-                subscribers: [],
-                favoriteBy: [],
-                createdAt: "2025-04-22T17:38:20.457Z",
-                updatedAt: "2025-04-22T17:39:03.953Z",
-                __v: 1
-            }
-        ],
-        questions: [],
-        bio: "I´m New Teacher",
-        id: "6807d3ed21d8f38d6b405f57"
-    }
+    const dispatch=useDispatch();
+    const  {id} = useParams();
+    const {profile , loading , isProfileDeleted}=useSelector(state=>state.profile);
+    const { user } = useSelector(state => state.auth);
+    const [file, setFile] = useState(null); 
     const [updateProfile,setUpdateProfile]=useState(false);
-    console.log(updateProfile);
 
+    useEffect(()=>{
+        dispatch(getUserProfile(id));
+        window.scrollTo(0,0);
+        
+    },[id]);
+    
+    
+    const navigate = useNavigate()
+    useEffect(()=>{
+       if(isProfileDeleted===true){
+        navigate("/");
+       } 
+    },[navigate,isProfileDeleted]);
+    // تغيير الصورة الشخصية مؤقتًا
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+         //   const fileUrl = URL.createObjectURL(file);
+            setFile(file);
+        }
+    }
+    // Form Submit Handler
+    const formSubmitHandler=(e)=>{
+        e.preventDefault();
+
+        if(!file) return toast.error("No Image Provided");
+
+        const formData=new FormData();
+        formData.append("image",file);
+
+        dispatch(uploadProfilePhoto(formData));
+    }
      // Delete Account Handler
      const deleteAccountHandler=()=>{
         Swal.fire({
@@ -66,75 +61,85 @@ const TeacherProfile = () => {
             confirmButtonText: "Yes, delete it!"
           }).then((result) => {
             if (result.isConfirmed) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Your Account has been deleted.",
-                icon: "success",
-                confirmButtonColor: "#040734",
-              });
-            }else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-                ) {
-                swalWithBootstrapButtons.fire({
-                    title: "Cancelled",
-                    text: "Something Wrong :)",
-                    icon: "error"
-                });
-                }
+             dispatch(deleteProfile(user?._id))
+             dispatch(logoutUser());
+            }
           });
+    }
+    // Loading
+    if(loading){
+        return(
+            <div className="loading">
+                <Oval
+            visible={true}
+            height="120"
+            width="120"
+            color="#000"
+            ariaLabel="oval-loading"
+            secondaryColor="gray"
+            wrapperStyle={{}}
+            wrapperClass=""
+            strokeWidth={3}
+            strokeWidthSecondary={3}
+            />
+            </div>
+        )
     }
     return ( 
         <section className="profile">
-        <ToastContainer position="top-center" theme="colored"/>
 
             <div className="profile-header">
                 <div className="profile-image-wrapper">
-                    <img src={userTeacher.profilePhoto.url} alt="" className="profile-image" />
-                    <form >
+                <img src={file? URL.createObjectURL(file) :profile?.profilePhoto.url} alt="" className="profile-image" />
+                   {user?._id === profile?._id &&( <form onSubmit={formSubmitHandler} >
                         <abbr title="choose profile photo">
                         <label htmlFor="file" className="upload-profile-photo-icon">
                         <img src="/icons/ios-photos.png" alt="" />
                         
                         </label>
                         </abbr>
-                        <input style={{display:"none"}} type="file" name="file" id="file" />
+                        <input style={{display:"none"}} type="file" name="file" id="file" onChange={handleImageChange} />
                         <button type="submit" className="upload-profile-photo-btn">Upload</button>
                     </form>
+                   )}
                 </div>
-                <h1 className="profile-username">
-                    {userTeacher.username}
-                </h1>
-                {userTeacher.role==="teacher" &&
+          
+               
                 <div className="profile-teacher-info">
-                    <p className="profile-bio"> Bio :{userTeacher.bio}</p>
-                    <p className="profile-bio"> PhoneNumber :{userTeacher.phoneNumber}</p>
-                    <Link to={userTeacher.whatsappLink} 
+                <h1 className="profile-username">
+                    {profile?.username}
+                </h1>
+                    <p className="profile-bio"> Bio :{profile?.bio}</p>
+                    <p className="profile-bio"> PhoneNumber :{profile?.phoneNumber}</p>
+                    <Link to={profile?.whatsappLink} 
                     className="profile-whatsapplink"> 
                     <img src="/icons/whatsapp.png" alt="" />
                     Whatsapp Link 
                     </Link>
                 </div>
-                }
+
                 <div className="user-date-joined">
                     <strong>
                         Date Joined:
                          <span>
-                        <DateChange date={userTeacher.createdAt}/>
+                        <DateChange date={profile?.createdAt}/>
                         </span>
                     </strong>
                 </div>
-                <button onClick={()=>setUpdateProfile(true)} className="profile-update-btn">
+                {user?._id === profile?._id &&(
+                    <button onClick={()=>setUpdateProfile(true)} className="profile-update-btn">
                 <img  src="/icons/update.png" className="icon-update" alt="" />
                     Update Profile
-                </button>
+                </button>)
+                }
+            
             </div>
            <div className="profile-courses-list pobular-course">
                 <h2 className="profile-course-list-title">
-                    {userTeacher.username} Courses:
+                    {profile?.username} Courses:
                 </h2>
                 <div className="container">
-                {userTeacher?.courses?.map((c) => (
+                {profile?.courses?.map((c) => (
                     <div className="box" key={c.id}>
                         <span className="course-category">{c.category}</span>
                         <div className="box-image">
@@ -143,7 +148,7 @@ const TeacherProfile = () => {
                         <div className="box-text">
                         <div className="title-date">
                             <h4>{c.title}</h4>
-                            <span>{c.createdAt}</span>
+                            <span><DateChange date={c.createdAt}/></span>
                         </div>
 
                         <p className="description">
@@ -151,15 +156,9 @@ const TeacherProfile = () => {
                         </p>
 
                         <div className="buttons">
-                            <Link to={`/courses/details/${c.id}`} className="readmore-course">
+                            <Link to={`/courses/details/${c._id}`} className="readmore-course">
                             Read More...
                             </Link>
-                            <button className="register-course">
-                            Register for the course
-                            </button>
-                            <button className="favorite-course">
-                            Add Course To Favorite
-                            </button>
                         </div>
 
                         <div className="flex">
@@ -176,11 +175,12 @@ const TeacherProfile = () => {
  
                 </div>
             </div>
-            <button onClick={deleteAccountHandler} className="profile-delete-btn">
+            {user?._id === profile?._id &&(<button onClick={deleteAccountHandler} className="profile-delete-btn">
                 <img src="/icons/delete.png" className="icon-delete" alt="" />
                     Delete Your Account
                 </button>
-                {updateProfile && <UpdateTeacherProfileModal setUpdateProfile={setUpdateProfile} />}
+            )}
+                {updateProfile && <UpdateTeacherProfileModal setUpdateProfile={setUpdateProfile}  profile={profile}/>}
 
         </section>
      );

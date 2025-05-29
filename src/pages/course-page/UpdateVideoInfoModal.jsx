@@ -1,8 +1,13 @@
 import { useState } from "react";
+import {useDispatch} from "react-redux";
+import { updateVideoImageTitle } from "../../redux/apiCalls/videoApiCall";
 
 const UpdateVideoInfoModal = ({setUPdateVideo,video}) => {
+
+    const disptach = useDispatch();
     const [title,setTitle]=useState(video.title);
-    const [file,setFile]=useState(video.image);
+    const [file,setFile]=useState(null);
+    // Form Submit Handler
     const formSubmitHandler = (e) => {
         e.preventDefault();
       
@@ -10,13 +15,15 @@ const UpdateVideoInfoModal = ({setUPdateVideo,video}) => {
         formData.append('title', title);
       
         if (file) {
-          formData.append('file', file);
+          formData.append('image', file);
         }
         
          // طباعة محتوى الـ formData
-  for (let pair of formData.entries()) {
-    console.log(pair[0] + ': ' + pair[1]);
-  }
+        disptach(updateVideoImageTitle(video?._id,formData));
+        setUPdateVideo(false);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
     }
     return ( 
         <div className="update-course">

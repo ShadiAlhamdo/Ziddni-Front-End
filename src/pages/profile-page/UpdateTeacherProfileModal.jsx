@@ -1,66 +1,27 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { getUserProfile, updateProfile } from "../../redux/apiCalls/profileApiCall";
+const UpdateTeacherProfileModal = ({setUpdateProfile,profile}) => {
 
-const UpdateTeacherProfileModal = ({setUpdateProfile}) => {
-    const userTeacher={
-        _id: "6807d3ed21d8f38d6b405f57",
-        username: "alaa",
-        email: "alaa@email.com",
-        profilePhoto: {
-            url: "https://media.istockphoto.com/id/1389898082/de/foto/s%C3%BC%C3%9Fer-junge-ikonischer-charakter-mit-brille-3d-rendering.jpg?s=2048x2048&w=is&k=20&c=cOl9XSWvShItbtNwlZabaVpW2TQ7Yljx0t-LSaRm4x4=",
-            publicId: null
-        },
-        role: "teacher",
-        isAdmin: false,
-        isAccountVerified: false,
-        phoneNumber: "+963933519382",
-        whatsappLink: "link",
-        specialization: "67ba0df7b4f995b3d95bd651",
-        createdAt: "2025-04-22T17:37:49.656Z",
-        updatedAt: "2025-04-22T17:37:49.656Z",
-        __v: 0,
-        courses: [
-            {
-                _id: "6807d40c21d8f38d6b405f5b",
-                title: "Web Course",
-                description: "Design Course For Biggner",
-                user: "6807d3ed21d8f38d6b405f57",
-                category: "Design",
-                image: {
-                    url: "https://res.cloudinary.com/djzntpxjj/image/upload/v1745343499/hi1ld0ggd05s2nkdnxcf.jpg",
-                    publicId: "hi1ld0ggd05s2nkdnxcf"
-                },
-                likes: [],
-                videos: [
-                    "6807d43721d8f38d6b405f60"
-                ],
-                subscribers: [],
-                favoriteBy: [],
-                createdAt: "2025-04-22T17:38:20.457Z",
-                updatedAt: "2025-04-22T17:39:03.953Z",
-                __v: 1
-            }
-        ],
-        questions: [],
-        bio: "I´m New Teacher",
-        id: "6807d3ed21d8f38d6b405f57"
-    }
-
-    const [username,setUsername]=useState(userTeacher.username);
-    const [bio,setBio]=useState(userTeacher.bio);
+    const dispatch=useDispatch()
+    const [username,setUsername]=useState(profile.username);
+    const [bio,setBio]=useState(profile.bio);
     const [password,setPassword]=useState("");
-    const [phoneNumber,setPhoneNumber]=useState(userTeacher.phoneNumber);
-    const [whatsappLink,setWhatsaooLink]=useState(userTeacher.whatsappLink)
+    const [phoneNumber,setPhoneNumber]=useState(profile.phoneNumber);
+    const [whatsappLink,setWhatsaooLink]=useState(profile.whatsappLink);
     // Form Submit Handler
     const formSubmitHandler=(e)=>{
         e.preventDefault();
-         const UpdatedUser={username,bio}
+        const UpdatedUser={username,whatsappLink,phoneNumber,bio}
          if(password.trim()!==""){
             UpdatedUser.password=password;
          }
         if(username.trim()==="") return toast.error("User Name Is Required")
 
-        console.log(UpdatedUser)
+        dispatch(updateProfile(profile._id,UpdatedUser));
+        dispatch(getUserProfile(profile._id));
+        setUpdateProfile(false)
     }
     return ( 
         <div className="update-course">

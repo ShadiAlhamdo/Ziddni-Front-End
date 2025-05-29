@@ -1,8 +1,10 @@
 import "./form.css";
 import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
-
+import { toast } from "react-toastify";
+import {useDispatch} from "react-redux"
+import { forgotPassword } from "../../redux/apiCalls/passwordApiCall";
 const ForgotPassword = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
 
   const formSubmitHandler = (e) => {
@@ -11,17 +13,12 @@ const ForgotPassword = () => {
     if (email.trim() === "") return toast.error("Email is required");
 
     // يمكنك هنا إرسال البيانات للسيرفر أو التحقق منها
-    const loginData = {
-      email,
-    };
-
-    console.log("Login Data:", loginData);
-    toast.success("Login submitted!");
+    
+    dispatch(forgotPassword(email));
   };
 
   return (
     <section className="form-container login-container ">
-       <ToastContainer theme="colored" position="top-center"/>
       <h1 className="form-title">Forgot Password</h1>
       <form onSubmit={formSubmitHandler} className="form">
         <div className="form-group">

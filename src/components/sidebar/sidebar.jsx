@@ -62,12 +62,19 @@ const Sidebar = () => {
                 {isOpen && (
                     <div className="links">
                         <div className="link">
+                       
                             <div className="image">
+                                
                                 <img src={user?.profilePhoto.url} alt="Student" />
                             </div>
-                            <Link onClick={toggleSidebar} to={`/profile/${user?._id}`}>Profile</Link>
+                            <span>{user?.username}</span>
+                            
+                            <Link onClick={toggleSidebar} to={user.role==="teacher"?`/profile/teacher/${user?._id}`:`/profile/student/${user?._id}`}>Profile</Link>
+                            
                         </div>
-                        <div className="link">
+                       {user.role==="teacher" ? 
+                       <>
+                       <div className="link">
                             
                             <Link onClick={toggleSidebar} to={"/profile/create-course"}>Create Course</Link>
                         </div>
@@ -75,6 +82,10 @@ const Sidebar = () => {
                             
                             <Link onClick={toggleSidebar} to={"/profile/create-video"}>Create Video</Link>
                         </div>
+                       </>
+                       :
+                       <></>
+                       }
                         <div className="colors">
                             <div className="color"> 
                                 Dark 
@@ -92,7 +103,7 @@ const Sidebar = () => {
             {/* زر السهم للأعلى */}
             {showScrollToTop && (
                 <button className="scroll-to-top" onClick={scrollToTop}>
-                   ⭡
+                   <img src="/icons/up-arrow.png" alt="" />
                 </button>
             )}
         </>

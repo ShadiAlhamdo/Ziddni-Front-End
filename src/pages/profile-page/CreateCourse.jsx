@@ -1,11 +1,22 @@
-import { useState } from "react";
-import {toast,ToastContainer} from "react-toastify";
-
+import { useState , useEffect } from "react";
+import {toast} from "react-toastify";
+import {useSelector,useDispatch } from "react-redux";
+import { createCourse } from "../../redux/apiCalls/courseApiCall";
+import {useNavigate} from "react-router-dom";
+import {RotatingLines } from "react-loader-spinner"
+import { fetchAllCtegories } from "../../redux/apiCalls/categoryApiCall";
 const CreateCourse = () => {
+    const dispatch = useDispatch();
+    const {loading , isCourseCreated} = useSelector(state=>state.course);
+    const {categories} = useSelector(state=>state.category.categories);
     const [title,setTitle]=useState("");
     const [description,setDescription]=useState("");
     const [category,setCategory]=useState("");
     const [file,setFile]=useState(null);
+
+    useEffect(()=>{
+        dispatch(fetchAllCtegories());
+    })
 
     // Form Submit Handler
     const formSubmitHandler=(e)=>{
@@ -22,17 +33,24 @@ const CreateCourse = () => {
         if(!file){
             return toast.error(" Course Image Is Required")
         }
-        const formDate=new FormData();
-        formDate.append("image",file);
-        formDate.append("title",title);
-        formDate.append("category",category);
-        formDate.append("description",description);
-        console.log(formDate);
-    }
+        const formData=new FormData();
+        formData.append("image",file);
+        formData.append("title",title);
+        formData.append("category",category);
+        formData.append("description",description);
+        
+        dispatch(createCourse(formData));
+    };
+    const navigate = useNavigate();
+    useEffect(()=>{
+        if(isCourseCreated){
+            navigate("/");
+
+        }
+    },[isCourseCreated,navigate])
 
     return ( 
         <section className="create-course">
-            <ToastContainer theme="colored" position="top-center"/>
             <h1 className="create-course-title">
                 Create New Course
             </h1>
@@ -45,9 +63,10 @@ const CreateCourse = () => {
                    />
                 <select className="create-course-input" value={category} onChange={(e)=>setCategory(e.target.value)}>
                     <option value="" disabled>Select A Ctegory</option>
-                    <option value="programming">Programming</option>
-                    <option value="design">Design</option>
-                    <option value="language">Language</option>
+                    {categories?.map((c)=>(
+                        <option value={c?.title}>{c?.title}</option>
+                    ))}
+                    
                 </select>
                 <textarea rows={5}
                 className="create-course-textarea"
@@ -58,7 +77,20 @@ const CreateCourse = () => {
                  <label className="create-course-label">Choose A Picture</label>
                 <input type="file" name="file"id="file" className="create-course-upload"onChange={(e)=>setFile(e.target.files[0])}/>
                 <button type="submit" className="create-course-btn">
-                    Create
+                    {
+                        loading ? <RotatingLines
+                                        visible={true}
+                                        width="40"
+                                        color="white"
+                                        strokeWidth="5"
+                                        animationDuration="0.75"
+                                        ariaLabel="rotating-lines-loading"
+                                        wrapperStyle={{}}
+                                        wrapperClass=""
+                                        />
+                                        : "Create"
+                    }
+                    
                 </button>
             </form>
         </section>
