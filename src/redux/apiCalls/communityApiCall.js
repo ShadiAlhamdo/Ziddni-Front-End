@@ -115,7 +115,7 @@ export function updateAnswer(content,answer) {
                     Authorization:"Bearer " + state.auth.user.token
                   }
                 })
-                dispatch( getAllAnswersForSpecificQuestion(answer?.question));
+               
              toast.success(data.message);
         } catch (error) {
             toast.error(error.response.data.message || "Something went wrong");

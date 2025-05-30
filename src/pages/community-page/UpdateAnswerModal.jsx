@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import {  updateAnswer } from "../../redux/apiCalls/communityApiCall";
+import {  getAllAnswersForSpecificQuestion, updateAnswer } from "../../redux/apiCalls/communityApiCall";
 
 const UpdateAnswerModal = ({setUpdateAnswer,answer}) => {
     const dispatch = useDispatch();
     const [content,setContent]=useState(answer.content);
  
-    const formSubmitHandler = (e) => {
+    const formSubmitHandler =async (e) => {
         e.preventDefault();
       
         if(content.trim()==="") return toast.error("Please Write Something")
            
-        dispatch(updateAnswer(content,answer._id));
+      await  dispatch(updateAnswer(content,answer));
+         dispatch( getAllAnswersForSpecificQuestion(answer?.question));
         setUpdateAnswer(false);
     }
     return ( 
