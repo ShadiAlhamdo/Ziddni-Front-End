@@ -6,8 +6,8 @@ import { useEffect } from "react";
 import { deleteComment, getAllComments } from "../../redux/apiCalls/commentApiCall";
 
 const CommentsTabel = () => {
-        const dispatch = useDispatch();
-    const {comments} = useSelector(state=>state.comment);
+    const dispatch = useDispatch();
+    const {comments} = useSelector(state=>state.comment.comments);
     useEffect(()=>{
         dispatch(getAllComments());
     },[])
@@ -46,7 +46,7 @@ const CommentsTabel = () => {
                     </thead>
                     <tbody>
                         {comments?.map((item,index)=>(
-                            <tr key={item._id }>
+                            <tr key={item?._id }>
                                 <td>{index + 1}</td>
                                 <td>
                                     <div className="tabel-image">
