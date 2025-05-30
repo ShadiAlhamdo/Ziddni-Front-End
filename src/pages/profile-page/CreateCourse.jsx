@@ -8,7 +8,7 @@ import { fetchAllCtegories } from "../../redux/apiCalls/categoryApiCall";
 const CreateCourse = () => {
     const dispatch = useDispatch();
     const {loading , isCourseCreated} = useSelector(state=>state.course);
-    const {categories} = useSelector(state=>state.category.categories);
+    const {categories} = useSelector(state=>state.category);
     const [title,setTitle]=useState("");
     const [description,setDescription]=useState("");
     const [category,setCategory]=useState("");
