@@ -12,7 +12,7 @@ const UpdateAnswerModal = ({setUpdateAnswer,answer}) => {
       
         if(content.trim()==="") return toast.error("Please Write Something")
            
-        dispatch(updateAnswer(content,answer));
+        dispatch(updateAnswer(content,answer._id));
         setUpdateAnswer(false);
     }
     return ( 
