@@ -13,7 +13,8 @@ const UpdateAnswerModal = ({setUpdateAnswer,answer}) => {
         if(content.trim()==="") return toast.error("Please Write Something")
            
       await  dispatch(updateAnswer(content,answer));
-         dispatch( getAllAnswersForSpecificQuestion(answer?.question));
+      console.log(answer?.question)
+         dispatch( getAllAnswersForSpecificQuestion(answer?.question?._id));
         setUpdateAnswer(false);
     }
     return ( 
