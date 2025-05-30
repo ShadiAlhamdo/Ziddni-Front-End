@@ -11,10 +11,10 @@ const Register = () => {
 
   const dispatch=useDispatch();
   const {registerMessage}=useSelector(state=> state.auth)
-  const {specializations} = useSelector(state=>state.Specialization);
+  const {specializations} = useSelector(state=>state.specialization);
   useEffect(()=>{
     dispatch(getSpecializations());
-  })
+  },[]);
   const [role, setRole] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
