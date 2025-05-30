@@ -5,12 +5,16 @@ import { toast } from "react-toastify";
 import {useDispatch,useSelector} from "react-redux"
 import { registerUser } from "../../redux/apiCalls/authApiCall";
 import swal from "sweetalert";
+import { getSpecializations } from "../../redux/apiCalls/specializationApiCall";
 
 const Register = () => {
 
   const dispatch=useDispatch();
   const {registerMessage}=useSelector(state=> state.auth)
-
+  const {specializations} = useSelector(state=>state.Specialization);
+  useEffect(()=>{
+    dispatch(getSpecializations());
+  })
   const [role, setRole] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
@@ -172,8 +176,10 @@ const Register = () => {
             <option disabled value="">
               -- Select specialization --
             </option>
-            <option value="67ba0f06cf1c261aaa81a3a1">Web Developer New</option>
-            <option value="67ba17976464f481c175cd61">Design</option>
+            {specializations?.map((s,ind)=>(
+                  <option key={ind} value={`${s?._id}`}>{s?.specializationName}</option>
+            ))}
+           
           </select>
         </div>
           </>
