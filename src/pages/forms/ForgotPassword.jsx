@@ -3,8 +3,10 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import {useDispatch} from "react-redux"
 import { forgotPassword } from "../../redux/apiCalls/passwordApiCall";
+import { useNavigate } from "react-router-dom";
 const ForgotPassword = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
 
   const formSubmitHandler = (e) => {
@@ -15,6 +17,7 @@ const ForgotPassword = () => {
     // يمكنك هنا إرسال البيانات للسيرفر أو التحقق منها
     
     dispatch(forgotPassword(email));
+    navigate("/login")
   };
 
   return (
