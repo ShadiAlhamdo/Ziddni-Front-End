@@ -47,7 +47,6 @@ const StudentProfile = () => {
     // تغيير الصورة الشخصية مؤقتًا
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        console.log(file)
         if (file) {
             
             setFile(file);
