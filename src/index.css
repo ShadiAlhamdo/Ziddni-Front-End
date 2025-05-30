@@ -201,9 +201,15 @@ section.Toastify{
   cursor: pointer;
 }
 /*  Media Queries */
-@media (max-width:1380px){
+@media (max-width:1200px){
   .header-left{
       flex-direction: row-reverse;
+  }
+  .header-logo{
+    font-size: 24px;
+  }
+  .header-logo img{
+    display: none;
   }
   .header-menu{
       display: flex;
