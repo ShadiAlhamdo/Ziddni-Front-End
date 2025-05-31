@@ -7,7 +7,7 @@ import { deleteComment, getAllComments } from "../../redux/apiCalls/commentApiCa
 
 const CommentsTabel = () => {
     const dispatch = useDispatch();
-    const {comments} = useSelector(state=>state.comment.comments);
+    const {comments} = useSelector(state=>state.comment);
     useEffect(()=>{
         dispatch(getAllComments());
     },[])
