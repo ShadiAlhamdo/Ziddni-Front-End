@@ -13,6 +13,7 @@ const Navbar = ({toggel,setToggel}) => {
                     <Link onClick={()=>setToggel(prev=> !prev)} to="/courses" className="nav-link">
                     <img src="/icons/online-course.ico" alt="" />Courses
                     </Link>
+                  {user ? <>
                     <Link onClick={()=>setToggel(prev=> !prev)} to="/community" className="nav-link">
                     <img src="/icons/community.ico" alt="" />Community
                     </Link>
@@ -22,6 +23,10 @@ const Navbar = ({toggel,setToggel}) => {
                     <Link onClick={()=>setToggel(prev=> !prev)} to="/specializations" className="nav-link">
                     <img src="/icons/category.ico" alt="" />Specializations
                     </Link>
+                   </>
+                   :
+                   <></>
+                   }
                     {user?.isAdmin &&<Link onClick={()=>setToggel(prev=> !prev)}  to="/admin-dashboard" className="nav-link">
                     <img src="/icons/newspaper.ico" alt="" />Admin Dashboard
                     </Link>}
