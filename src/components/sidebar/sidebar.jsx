@@ -101,14 +101,14 @@ const Sidebar = () => {
                     </div>
                 )}
             </div>
-
+            )}
             {/* زر السهم للأعلى */}
             {showScrollToTop && (
                 <button className="scroll-to-top" onClick={scrollToTop}>
                    <img src="/icons/up-arrow.png" alt="" />
                 </button>
             )}
-            )}
+            
         </>
     );
 };
