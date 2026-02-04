@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
     const {user}=useSelector(state=>state.auth);
+     if (!user) {
+        return null; // لو مش مسجل دخول، السايدبار يختفي
+    }
 
     const [isOpen, setIsOpen] = useState(false);
     const [theme, setTheme] = useState('dark'); 
