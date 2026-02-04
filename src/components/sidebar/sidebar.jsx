@@ -4,9 +4,7 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
     const {user}=useSelector(state=>state.auth);
-     if (!user) {
-        return null; // لو مش مسجل دخول، السايدبار يختفي
-    }
+     
 
     const [isOpen, setIsOpen] = useState(false);
     const [theme, setTheme] = useState('dark'); 
@@ -58,7 +56,8 @@ const Sidebar = () => {
 
     return ( 
         <>
-            <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
+            {user && (
+             <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
                 <div className="button" onClick={toggleSidebar}>
                     <img src="/icons/settings.png" alt="Toggle Sidebar" />
                 </div>
@@ -108,6 +107,7 @@ const Sidebar = () => {
                 <button className="scroll-to-top" onClick={scrollToTop}>
                    <img src="/icons/up-arrow.png" alt="" />
                 </button>
+            )}
             )}
         </>
     );
