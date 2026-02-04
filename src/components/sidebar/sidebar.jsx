@@ -56,7 +56,6 @@ const Sidebar = () => {
 
     return ( 
         <>
-            {user && (
              <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
                 <div className="button" onClick={toggleSidebar}>
                     <img src="/icons/settings.png" alt="Toggle Sidebar" />
@@ -101,7 +100,7 @@ const Sidebar = () => {
                     </div>
                 )}
             </div>
-            )}
+           
             {/* زر السهم للأعلى */}
             {showScrollToTop && (
                 <button className="scroll-to-top" onClick={scrollToTop}>
